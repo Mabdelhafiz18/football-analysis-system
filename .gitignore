@@ -6,3 +6,9 @@ node_modules/
 dist/
 .env
 
+uploads/*
+!uploads/.gitkeep
+results/*
+!results/.gitkeep
+frames/*
+!frames/.gitkeep

@@ -1,0 +1,34 @@
+{
+  "match_id": 1,
+  "possession": {
+    "home": 58,
+    "away": 42
+  },
+  "shots": {
+    "home": 14,
+    "away": 9
+  },
+  "goals": {
+    "home": 2,
+    "away": 1
+  },
+  "xg": {
+    "home": 1.85,
+    "away": 1.12
+  },
+  "fouls": {
+    "home": 11,
+    "away": 15
+  },
+  "offsides": {
+    "home": 3,
+    "away": 5
+  },
+  "cards": {
+    "yellow_home": 2,
+    "yellow_away": 4,
+    "red_home": 0,
+    "red_away": 1
+  }
+}
+

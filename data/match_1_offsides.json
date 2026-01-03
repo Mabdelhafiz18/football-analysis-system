@@ -1,0 +1,63 @@
+[
+  {
+    "incident_id": 1001,
+    "minute": 12,
+    "second": 34,
+    "team": "away",
+    "player": "Mohamed Salah",
+    "decision": "offside",
+    "margin_m": 0.15,
+    "confidence": 0.92
+  },
+  {
+    "incident_id": 1002,
+    "minute": 28,
+    "second": 17,
+    "team": "home",
+    "player": "Marcus Rashford",
+    "decision": "onside",
+    "margin_m": 0.08,
+    "confidence": 0.88
+  },
+  {
+    "incident_id": 1003,
+    "minute": 35,
+    "second": 52,
+    "team": "away",
+    "player": "Darwin Núñez",
+    "decision": "offside",
+    "margin_m": 0.32,
+    "confidence": 0.95
+  },
+  {
+    "incident_id": 1004,
+    "minute": 47,
+    "second": 8,
+    "team": "away",
+    "player": "Luis Díaz",
+    "decision": "offside",
+    "margin_m": 0.22,
+    "confidence": 0.91
+  },
+  {
+    "incident_id": 1005,
+    "minute": 61,
+    "second": 43,
+    "team": "home",
+    "player": "Antony",
+    "decision": "offside",
+    "margin_m": 0.12,
+    "confidence": 0.89
+  },
+  {
+    "incident_id": 1006,
+    "minute": 78,
+    "second": 29,
+    "team": "away",
+    "player": "Cody Gakpo",
+    "decision": "offside",
+    "margin_m": 0.45,
+    "confidence": 0.97
+  }
+]
+

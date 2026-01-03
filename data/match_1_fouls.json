@@ -1,0 +1,83 @@
+[
+  {
+    "foul_id": 1001,
+    "minute": 5,
+    "second": 23,
+    "team": "away",
+    "player": "Fabinho",
+    "severity": "medium",
+    "card": "yellow",
+    "confidence": 0.88
+  },
+  {
+    "foul_id": 1002,
+    "minute": 18,
+    "second": 47,
+    "team": "home",
+    "player": "Casemiro",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.82
+  },
+  {
+    "foul_id": 1003,
+    "minute": 24,
+    "second": 12,
+    "team": "away",
+    "player": "Virgil van Dijk",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.79
+  },
+  {
+    "foul_id": 1004,
+    "minute": 31,
+    "second": 35,
+    "team": "away",
+    "player": "Ibrahima Konaté",
+    "severity": "medium",
+    "card": "yellow",
+    "confidence": 0.91
+  },
+  {
+    "foul_id": 1005,
+    "minute": 42,
+    "second": 8,
+    "team": "home",
+    "player": "Lisandro Martínez",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.85
+  },
+  {
+    "foul_id": 1006,
+    "minute": 56,
+    "second": 54,
+    "team": "away",
+    "player": "Jordan Henderson",
+    "severity": "medium",
+    "card": "yellow",
+    "confidence": 0.89
+  },
+  {
+    "foul_id": 1007,
+    "minute": 64,
+    "second": 19,
+    "team": "away",
+    "player": "Andy Robertson",
+    "severity": "high",
+    "card": "red",
+    "confidence": 0.94
+  },
+  {
+    "foul_id": 1008,
+    "minute": 73,
+    "second": 41,
+    "team": "home",
+    "player": "Raphaël Varane",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.81
+  }
+]
+

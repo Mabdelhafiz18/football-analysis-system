@@ -1,0 +1,83 @@
+[
+  {
+    "foul_id": 2001,
+    "minute": 7,
+    "second": 32,
+    "team": "away",
+    "player": "Casemiro",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.83
+  },
+  {
+    "foul_id": 2002,
+    "minute": 15,
+    "second": 18,
+    "team": "home",
+    "player": "Sergio Busquets",
+    "severity": "medium",
+    "card": "yellow",
+    "confidence": 0.90
+  },
+  {
+    "foul_id": 2003,
+    "minute": 22,
+    "second": 45,
+    "team": "away",
+    "player": "Éder Militão",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.78
+  },
+  {
+    "foul_id": 2004,
+    "minute": 29,
+    "second": 7,
+    "team": "home",
+    "player": "Jules Koundé",
+    "severity": "medium",
+    "card": "yellow",
+    "confidence": 0.87
+  },
+  {
+    "foul_id": 2005,
+    "minute": 38,
+    "second": 23,
+    "team": "away",
+    "player": "Federico Valverde",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.84
+  },
+  {
+    "foul_id": 2006,
+    "minute": 51,
+    "second": 56,
+    "team": "home",
+    "player": "Ronald Araújo",
+    "severity": "medium",
+    "card": "yellow",
+    "confidence": 0.92
+  },
+  {
+    "foul_id": 2007,
+    "minute": 59,
+    "second": 14,
+    "team": "away",
+    "player": "David Alaba",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.80
+  },
+  {
+    "foul_id": 2008,
+    "minute": 71,
+    "second": 38,
+    "team": "away",
+    "player": "Toni Kroos",
+    "severity": "low",
+    "card": "none",
+    "confidence": 0.86
+  }
+]
+

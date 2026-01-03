@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "home_team": "Manchester United",
+    "away_team": "Liverpool",
+    "date": "2024-03-15T15:00:00Z",
+    "league": "Premier League",
+    "status": "completed"
+  },
+  {
+    "id": 2,
+    "home_team": "Barcelona",
+    "away_team": "Real Madrid",
+    "date": "2024-03-20T20:00:00Z",
+    "league": "La Liga",
+    "status": "completed"
+  }
+]
+
