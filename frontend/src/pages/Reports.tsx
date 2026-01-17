@@ -13,6 +13,7 @@ import {
 import { AppLayout } from "@/components/layout";
 import { useMatches, useMatchSummary, useTactical } from "@/hooks/useMatches";
 import { useDecisions } from "@/hooks/useDecisions";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { ReportTypeCard } from "@/components/reports/ReportTypeCard";
 import { MatchSelector } from "@/components/reports/MatchSelector";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ type ReportType = "match" | "var" | "tactical" | "analytics";
 
 export default function Reports() {
   const { data: matches, isLoading: matchesLoading } = useMatches();
+  const { data: analytics, isLoading: analyticsLoading } = useAnalytics();
   const [searchParams] = useSearchParams();
   const { hasPermission, role } = usePermissions();
   const initialMatchId = searchParams.get("matchId") || "";
@@ -53,12 +55,6 @@ export default function Reports() {
   const { data: tactical } = useTactical(parseInt(selectedMatchId));
   const { incidents, summary: decisionsSummary } = useDecisions(selectedMatchId);
 
-  // Analytics data (mocked aggregated stats similar to Analytics page)
-  const analyticsStats = {
-    totalMatches: matches?.length || 0,
-    completedMatches: matches?.filter(m => m.status === 'completed').length || 0,
-  };
-
   const handleGenerate = async () => {
     if (!selectedMatchId && selectedReport !== "analytics") {
       toast.error("Please select a match first");
@@ -77,8 +73,8 @@ export default function Reports() {
         await generateVARReport(match, incidents, decisionsSummary);
       } else if (selectedReport === "tactical" && match && tactical) {
         await generateTacticalReport(match, tactical);
-      } else if (selectedReport === "analytics") {
-        await generateAnalyticsReport(analyticsStats);
+      } else if (selectedReport === "analytics" && analytics) {
+        await generateAnalyticsReport(analytics);
       } else {
         throw new Error("Missing data for report generation");
       }
@@ -196,7 +192,10 @@ export default function Reports() {
               <div className="p-6 rounded-xl bg-muted/20 border border-border/50 border-dashed text-center">
                 <FileCheck className="h-10 w-10 text-primary mx-auto mb-3 opacity-50" />
                 <p className="text-sm text-muted-foreground">
-                  System analytics report will include data from all {analyticsStats.totalMatches} matches currently in the system.
+                  {analyticsLoading 
+                    ? "Loading analytics data..." 
+                    : `System analytics report will include data from all ${analytics?.totalMatches || 0} matches currently in the system.`
+                  }
                 </p>
               </div>
             )}
@@ -215,7 +214,7 @@ export default function Reports() {
 
               <Button
                 onClick={handleGenerate}
-                disabled={isGenerating || (selectedReport !== "analytics" && !selectedMatchId)}
+                disabled={isGenerating || (selectedReport !== "analytics" && !selectedMatchId) || (selectedReport === "analytics" && analyticsLoading)}
                 size="lg"
                 className={cn(
                   "gap-2 px-8 min-w-[200px] lime-glow",
@@ -241,4 +240,3 @@ export default function Reports() {
     </AppLayout>
   );
 }
-

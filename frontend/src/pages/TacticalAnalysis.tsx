@@ -17,7 +17,7 @@ export default function TacticalAnalysis() {
 
   const { data: matches } = useMatches();
   const { data: tactical, isLoading } = useTactical(matchId);
-  const { data: passNetwork } = usePassNetwork();
+  const { data: passNetwork } = usePassNetwork(matchId);
   const { data: shots, isLoading: shotsLoading } = useShotPredictions(matchId);
 
   const match = matches?.find((m) => m.id === matchId);
@@ -195,7 +195,7 @@ export default function TacticalAnalysis() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-foreground truncate">
-                              {player.name}
+                              Player #{player.playerId}
                             </p>
                             <p className="text-xs text-muted-foreground">
                               {player.goals}G {player.assists}A • {player.passAccuracy}% pass
@@ -415,7 +415,7 @@ export default function TacticalAnalysis() {
                       {player.playerId}
                     </div>
                     <div>
-                      <p className="font-semibold text-foreground">{player.name}</p>
+                      <p className="font-semibold text-foreground">Player #{player.playerId}</p>
                       <p className="text-xs text-muted-foreground capitalize">{player.team}</p>
                     </div>
                   </div>

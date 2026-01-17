@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   BarChart3,
@@ -11,71 +10,31 @@ import {
   Activity,
 } from "lucide-react";
 import { AppLayout } from "@/components/layout";
-import { useMatches } from "@/hooks/useMatches";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { cn } from "@/lib/utils";
 import { usePermissions } from "@/hooks/usePermissions";
 
 export default function Analytics() {
-  const { data: matches, isLoading } = useMatches();
+  const { data: analytics, isLoading } = useAnalytics();
   const { role } = usePermissions();
   
   // Only manager and academy_admin can see AI Decision Accuracy
   const canViewDecisionAccuracy = role === "manager" || role === "academy_admin";
 
-  // Calculate aggregated stats
-  const stats = useMemo(() => {
-    if (!matches) return null;
-
-    const completedMatches = matches.filter((m) => m.status === "completed");
-    const totalGoals = completedMatches.reduce(
-      (sum, m) => sum + (m.homeScore || 0) + (m.awayScore || 0),
-      0
-    );
-    const avgGoals = completedMatches.length > 0 ? totalGoals / completedMatches.length : 0;
-
-    // League breakdown
-    const leagueStats = matches.reduce((acc, match) => {
-      if (!acc[match.league]) {
-        acc[match.league] = { total: 0, completed: 0 };
-      }
-      acc[match.league].total++;
-      if (match.status === "completed") {
-        acc[match.league].completed++;
-      }
-      return acc;
-    }, {} as Record<string, { total: number; completed: number }>);
-
-    // Status breakdown
-    const statusBreakdown = {
-      completed: matches.filter((m) => m.status === "completed").length,
-      processing: matches.filter((m) => m.status === "processing").length,
-      pending: matches.filter((m) => m.status === "pending").length,
-      failed: matches.filter((m) => m.status === "failed").length,
-    };
-
-    return {
-      totalMatches: matches.length,
-      completedMatches: completedMatches.length,
-      totalGoals,
-      avgGoals,
-      leagueStats,
-      statusBreakdown,
-    };
-  }, [matches]);
-
-  // Mock additional analytics data
+  // Decision stats from backend analytics
   const decisionStats = {
-    totalDecisions: 156,
-    offsides: 48,
-    fouls: 108,
-    accuracy: 94.2,
+    totalDecisions: analytics?.decisions.total || 0,
+    offsides: analytics?.decisions.offsides || 0,
+    fouls: analytics?.decisions.fouls || 0,
+    accuracy: 94.2, // Accuracy still mocked (requires referee feedback data)
   };
 
+  // Tactical insights (still mocked - requires tactical data aggregation)
   const tacticalInsights = [
     { label: "Most Common Formation", value: "4-3-3", trend: "+12%" },
     { label: "Average Possession", value: "52%", trend: "+3%" },
     { label: "Pass Accuracy", value: "84%", trend: "+5%" },
-    { label: "Shots per Match", value: "12.4", trend: "-2%" },
+    { label: "Shots per Match", value: analytics ? (analytics.shots.total / Math.max(analytics.completedMatches, 1)).toFixed(1) : "0", trend: "-2%" },
   ];
 
   return (
@@ -106,16 +65,16 @@ export default function Analytics() {
               <StatCard
                 icon={Trophy}
                 label="Total Matches"
-                value={stats?.totalMatches || 0}
-                subValue={`${stats?.completedMatches || 0} completed`}
+                value={analytics?.totalMatches || 0}
+                subValue={`${analytics?.completedMatches || 0} completed`}
                 color="primary"
                 index={0}
               />
               <StatCard
                 icon={Target}
                 label="Total Goals"
-                value={stats?.totalGoals || 0}
-                subValue={`${stats?.avgGoals.toFixed(1)} avg/match`}
+                value={analytics?.totalGoals || 0}
+                subValue={`${analytics?.avgGoalsPerMatch.toFixed(1) || "0.0"} avg/match`}
                 color="green"
                 index={1}
               />
@@ -218,9 +177,9 @@ export default function Analytics() {
                   <h2 className="text-lg font-semibold text-foreground">Matches by League</h2>
                 </div>
                 <div className="space-y-4">
-                  {stats &&
-                    Object.entries(stats.leagueStats).map(([league, data], index) => {
-                      const percentage = (data.completed / data.total) * 100;
+                  {analytics?.leagueBreakdown &&
+                    Object.entries(analytics.leagueBreakdown).map(([league, data], index) => {
+                      const percentage = data.total > 0 ? (data.completed / data.total) * 100 : 0;
                       return (
                         <motion.div
                           key={league}
@@ -303,26 +262,26 @@ export default function Analytics() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <StatusCard
                   label="Completed"
-                  value={stats?.statusBreakdown.completed || 0}
-                  total={stats?.totalMatches || 0}
+                  value={analytics?.statusBreakdown.completed || 0}
+                  total={analytics?.totalMatches || 0}
                   color="green"
                 />
                 <StatusCard
                   label="Processing"
-                  value={stats?.statusBreakdown.processing || 0}
-                  total={stats?.totalMatches || 0}
+                  value={analytics?.statusBreakdown.processing || 0}
+                  total={analytics?.totalMatches || 0}
                   color="yellow"
                 />
                 <StatusCard
                   label="Pending"
-                  value={stats?.statusBreakdown.pending || 0}
-                  total={stats?.totalMatches || 0}
+                  value={analytics?.statusBreakdown.pending || 0}
+                  total={analytics?.totalMatches || 0}
                   color="gray"
                 />
                 <StatusCard
                   label="Failed"
-                  value={stats?.statusBreakdown.failed || 0}
-                  total={stats?.totalMatches || 0}
+                  value={analytics?.statusBreakdown.failed || 0}
+                  total={analytics?.totalMatches || 0}
                   color="red"
                 />
               </div>
@@ -402,4 +361,3 @@ function StatusCard({ label, value, total, color }: StatusCardProps) {
     </div>
   );
 }
-

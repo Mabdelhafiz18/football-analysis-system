@@ -103,7 +103,7 @@ export function ShotPredictionViz({
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs space-y-1">
-                    <p className="font-bold text-foreground">{shot.player}</p>
+                    <p className="font-bold text-foreground">Player #{shot.playerNumber}</p>
                     <p className="text-muted-foreground">{shot.minute}' - {shot.outcome.replace('_', ' ')}</p>
                     <p className="text-primary font-mono font-bold">xG: {shot.xg.toFixed(2)}</p>
                   </div>

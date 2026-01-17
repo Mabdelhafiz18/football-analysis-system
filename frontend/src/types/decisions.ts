@@ -14,7 +14,7 @@ export interface BaseIncident {
   minute: number;
   second: number;
   team: Team;
-  player: string;
+  playerNumber: number;
   confidence: number;
   timestamp: number; // Total seconds from start
   isKeyDecision?: boolean;
@@ -25,6 +25,9 @@ export interface OffsideIncident extends BaseIncident {
   type: "offside";
   decision: OffsideDecision;
   marginMeters: number; // Distance in meters
+  offsideLineX?: number; // X position of offside line (0-1)
+  playerX?: number; // X position of player (0-1)
+  playerY?: number; // Y position of player (0-1)
 }
 
 // Foul-specific incident
@@ -33,6 +36,8 @@ export interface FoulIncident extends BaseIncident {
   severity: FoulSeverity;
   card: CardType;
   foulType?: string; // push, tackle, trip, obstruction, etc.
+  x?: number; // X position of foul (0-1)
+  y?: number; // Y position of foul (0-1)
 }
 
 // Union type for all incidents
@@ -130,22 +135,31 @@ export interface ApiOffsideResponse {
   incident_id: number;
   minute: number;
   second: number;
+  timestamp?: number;
   team: string;
-  player: string;
+  player_number: number;
   decision: string;
   margin_m: number;
   confidence: number;
+  offside_line_x?: number;
+  player_x?: number;
+  player_y?: number;
 }
 
 export interface ApiFoulResponse {
   foul_id: number;
   minute: number;
   second: number;
+  timestamp?: number;
   team: string;
-  player: string;
+  player_number: number;
+  foul_type?: string;
   severity: string;
   card: string;
+  card_type?: string;
   confidence: number;
+  x?: number;
+  y?: number;
 }
 
 // Type guards

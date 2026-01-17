@@ -1,83 +1,212 @@
 [
   {
     "foul_id": 2001,
-    "minute": 7,
-    "second": 32,
+    "minute": 3,
+    "second": 45,
+    "timestamp": 225.0,
+    "frame_number": 6750,
     "team": "away",
-    "player": "Casemiro",
-    "severity": "low",
-    "card": "none",
-    "confidence": 0.83
+    "player_number": 6,
+    "position_x": 55.0,
+    "position_y": 35.0,
+    "foul_type": "tackle",
+    "severity": "medium",
+    "card_type": "none",
+    "confidence": 0.85,
+    "contact_point": {
+      "x": 55.0,
+      "y": 35.0
+    },
+    "x": 0.55,
+    "y": 0.35
   },
   {
     "foul_id": 2002,
-    "minute": 15,
-    "second": 18,
+    "minute": 12,
+    "second": 28,
+    "timestamp": 748.0,
+    "frame_number": 22440,
     "team": "home",
-    "player": "Sergio Busquets",
-    "severity": "medium",
-    "card": "yellow",
-    "confidence": 0.90
+    "player_number": 3,
+    "position_x": 28.0,
+    "position_y": 62.0,
+    "foul_type": "push",
+    "severity": "low",
+    "card_type": "none",
+    "confidence": 0.78,
+    "contact_point": {
+      "x": 28.0,
+      "y": 62.0
+    },
+    "x": 0.28,
+    "y": 0.62
   },
   {
     "foul_id": 2003,
     "minute": 22,
-    "second": 45,
+    "second": 14,
+    "timestamp": 1334.0,
+    "frame_number": 40020,
     "team": "away",
-    "player": "Éder Militão",
-    "severity": "low",
-    "card": "none",
-    "confidence": 0.78
+    "player_number": 15,
+    "position_x": 72.0,
+    "position_y": 45.0,
+    "foul_type": "tackle",
+    "severity": "high",
+    "card_type": "yellow",
+    "confidence": 0.92,
+    "contact_point": {
+      "x": 72.0,
+      "y": 45.0
+    },
+    "x": 0.72,
+    "y": 0.45
   },
   {
     "foul_id": 2004,
-    "minute": 29,
-    "second": 7,
+    "minute": 30,
+    "second": 52,
+    "timestamp": 1852.0,
+    "frame_number": 55560,
     "team": "home",
-    "player": "Jules Koundé",
-    "severity": "medium",
-    "card": "yellow",
-    "confidence": 0.87
+    "player_number": 8,
+    "position_x": 42.0,
+    "position_y": 38.0,
+    "foul_type": "holding",
+    "severity": "low",
+    "card_type": "none",
+    "confidence": 0.81,
+    "contact_point": {
+      "x": 42.0,
+      "y": 38.0
+    },
+    "x": 0.42,
+    "y": 0.38
   },
   {
     "foul_id": 2005,
     "minute": 38,
-    "second": 23,
+    "second": 7,
+    "timestamp": 2287.0,
+    "frame_number": 68610,
     "team": "away",
-    "player": "Federico Valverde",
-    "severity": "low",
-    "card": "none",
-    "confidence": 0.84
+    "player_number": 4,
+    "position_x": 85.0,
+    "position_y": 52.0,
+    "foul_type": "tackle",
+    "severity": "medium",
+    "card_type": "yellow",
+    "confidence": 0.89,
+    "contact_point": {
+      "x": 85.0,
+      "y": 52.0
+    },
+    "x": 0.85,
+    "y": 0.52
   },
   {
     "foul_id": 2006,
-    "minute": 51,
-    "second": 56,
+    "minute": 46,
+    "second": 33,
+    "timestamp": 2793.0,
+    "frame_number": 83790,
     "team": "home",
-    "player": "Ronald Araújo",
-    "severity": "medium",
-    "card": "yellow",
-    "confidence": 0.92
+    "player_number": 6,
+    "position_x": 35.0,
+    "position_y": 70.0,
+    "foul_type": "obstruction",
+    "severity": "low",
+    "card_type": "none",
+    "confidence": 0.76,
+    "contact_point": {
+      "x": 35.0,
+      "y": 70.0
+    },
+    "x": 0.35,
+    "y": 0.70
   },
   {
     "foul_id": 2007,
-    "minute": 59,
-    "second": 14,
+    "minute": 55,
+    "second": 18,
+    "timestamp": 3318.0,
+    "frame_number": 99540,
     "team": "away",
-    "player": "David Alaba",
-    "severity": "low",
-    "card": "none",
-    "confidence": 0.80
+    "player_number": 8,
+    "position_x": 62.0,
+    "position_y": 28.0,
+    "foul_type": "tackle",
+    "severity": "medium",
+    "card_type": "none",
+    "confidence": 0.84,
+    "contact_point": {
+      "x": 62.0,
+      "y": 28.0
+    },
+    "x": 0.62,
+    "y": 0.28
   },
   {
     "foul_id": 2008,
-    "minute": 71,
-    "second": 38,
+    "minute": 63,
+    "second": 41,
+    "timestamp": 3821.0,
+    "frame_number": 114630,
+    "team": "home",
+    "player_number": 17,
+    "position_x": 18.0,
+    "position_y": 55.0,
+    "foul_type": "push",
+    "severity": "medium",
+    "card_type": "yellow",
+    "confidence": 0.88,
+    "contact_point": {
+      "x": 18.0,
+      "y": 55.0
+    },
+    "x": 0.18,
+    "y": 0.55
+  },
+  {
+    "foul_id": 2009,
+    "minute": 72,
+    "second": 25,
+    "timestamp": 4345.0,
+    "frame_number": 130350,
     "team": "away",
-    "player": "Toni Kroos",
+    "player_number": 2,
+    "position_x": 78.0,
+    "position_y": 18.0,
+    "foul_type": "tackle",
     "severity": "low",
-    "card": "none",
-    "confidence": 0.86
+    "card_type": "none",
+    "confidence": 0.82,
+    "contact_point": {
+      "x": 78.0,
+      "y": 18.0
+    },
+    "x": 0.78,
+    "y": 0.18
+  },
+  {
+    "foul_id": 2010,
+    "minute": 83,
+    "second": 56,
+    "timestamp": 5036.0,
+    "frame_number": 151080,
+    "team": "home",
+    "player_number": 5,
+    "position_x": 22.0,
+    "position_y": 42.0,
+    "foul_type": "holding",
+    "severity": "medium",
+    "card_type": "yellow",
+    "confidence": 0.87,
+    "contact_point": {
+      "x": 22.0,
+      "y": 42.0
+    },
+    "x": 0.22,
+    "y": 0.42
   }
 ]
-

@@ -22,6 +22,10 @@ export const config = {
       dbName: process.env.MONGODB_DB_NAME,
       enabled: process.env.USE_MONGODB === 'true'
     }
+  },
+  ai: {
+    url: process.env.AI_SERVICE_URL || 'http://localhost:5000',
+    pollingInterval: parseInt(process.env.AI_POLLING_INTERVAL, 10) || 5000
   }
 };
 

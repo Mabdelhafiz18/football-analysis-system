@@ -119,7 +119,7 @@ export function IncidentList({ incidents, isLoading }: IncidentListProps) {
                   <div className="flex items-center justify-between mt-1">
                     <div>
                       <span className="text-sm font-medium text-foreground truncate">
-                        {incident.player}
+                        Player #{incident.playerNumber}
                       </span>
                       <span className="text-xs text-muted-foreground ml-2">
                         ({incident.team === "home" ? "H" : "A"})

@@ -1,222 +1,141 @@
 {
   "match_id": 2,
   "formation": {
-    "home": "4-4-2",
+    "home": "4-3-3",
     "away": "4-3-3"
   },
   "avg_positions": [
-    {
-      "player_id": 301,
-      "team": "home",
-      "x": 0.12,
-      "y": 0.50,
-      "role": "GK"
-    },
-    {
-      "player_id": 302,
-      "team": "home",
-      "x": 0.25,
-      "y": 0.25,
-      "role": "LB"
-    },
-    {
-      "player_id": 303,
-      "team": "home",
-      "x": 0.25,
-      "y": 0.45,
-      "role": "CB"
-    },
-    {
-      "player_id": 304,
-      "team": "home",
-      "x": 0.25,
-      "y": 0.55,
-      "role": "CB"
-    },
-    {
-      "player_id": 305,
-      "team": "home",
-      "x": 0.25,
-      "y": 0.75,
-      "role": "RB"
-    },
-    {
-      "player_id": 306,
-      "team": "home",
-      "x": 0.50,
-      "y": 0.20,
-      "role": "LM"
-    },
-    {
-      "player_id": 307,
-      "team": "home",
-      "x": 0.50,
-      "y": 0.40,
-      "role": "CM"
-    },
-    {
-      "player_id": 308,
-      "team": "home",
-      "x": 0.50,
-      "y": 0.60,
-      "role": "CM"
-    },
-    {
-      "player_id": 309,
-      "team": "home",
-      "x": 0.50,
-      "y": 0.80,
-      "role": "RM"
-    },
-    {
-      "player_id": 310,
-      "team": "home",
-      "x": 0.72,
-      "y": 0.40,
-      "role": "ST"
-    },
-    {
-      "player_id": 311,
-      "team": "home",
-      "x": 0.72,
-      "y": 0.60,
-      "role": "ST"
-    },
-    {
-      "player_id": 401,
-      "team": "away",
-      "x": 0.88,
-      "y": 0.50,
-      "role": "GK"
-    },
-    {
-      "player_id": 402,
-      "team": "away",
-      "x": 0.75,
-      "y": 0.25,
-      "role": "LB"
-    },
-    {
-      "player_id": 403,
-      "team": "away",
-      "x": 0.75,
-      "y": 0.45,
-      "role": "CB"
-    },
-    {
-      "player_id": 404,
-      "team": "away",
-      "x": 0.75,
-      "y": 0.55,
-      "role": "CB"
-    },
-    {
-      "player_id": 405,
-      "team": "away",
-      "x": 0.75,
-      "y": 0.75,
-      "role": "RB"
-    },
-    {
-      "player_id": 406,
-      "team": "away",
-      "x": 0.55,
-      "y": 0.35,
-      "role": "CM"
-    },
-    {
-      "player_id": 407,
-      "team": "away",
-      "x": 0.55,
-      "y": 0.50,
-      "role": "CM"
-    },
-    {
-      "player_id": 408,
-      "team": "away",
-      "x": 0.55,
-      "y": 0.65,
-      "role": "CM"
-    },
-    {
-      "player_id": 409,
-      "team": "away",
-      "x": 0.70,
-      "y": 0.30,
-      "role": "LW"
-    },
-    {
-      "player_id": 410,
-      "team": "away",
-      "x": 0.70,
-      "y": 0.50,
-      "role": "ST"
-    },
-    {
-      "player_id": 411,
-      "team": "away",
-      "x": 0.70,
-      "y": 0.70,
-      "role": "RW"
-    }
+    { "player_id": 301, "team": "home", "x": 0.05, "y": 0.50, "role": "GK" },
+    { "player_id": 302, "team": "home", "x": 0.22, "y": 0.15, "role": "LB" },
+    { "player_id": 303, "team": "home", "x": 0.18, "y": 0.38, "role": "CB" },
+    { "player_id": 304, "team": "home", "x": 0.18, "y": 0.62, "role": "CB" },
+    { "player_id": 305, "team": "home", "x": 0.22, "y": 0.85, "role": "RB" },
+    { "player_id": 306, "team": "home", "x": 0.45, "y": 0.30, "role": "CM" },
+    { "player_id": 307, "team": "home", "x": 0.35, "y": 0.50, "role": "CDM" },
+    { "player_id": 308, "team": "home", "x": 0.45, "y": 0.70, "role": "CM" },
+    { "player_id": 309, "team": "home", "x": 0.70, "y": 0.18, "role": "LW" },
+    { "player_id": 310, "team": "home", "x": 0.80, "y": 0.50, "role": "ST" },
+    { "player_id": 311, "team": "home", "x": 0.70, "y": 0.82, "role": "RW" },
+    { "player_id": 401, "team": "away", "x": 0.95, "y": 0.50, "role": "GK" },
+    { "player_id": 402, "team": "away", "x": 0.78, "y": 0.15, "role": "LB" },
+    { "player_id": 403, "team": "away", "x": 0.82, "y": 0.38, "role": "CB" },
+    { "player_id": 404, "team": "away", "x": 0.82, "y": 0.62, "role": "CB" },
+    { "player_id": 405, "team": "away", "x": 0.78, "y": 0.85, "role": "RB" },
+    { "player_id": 406, "team": "away", "x": 0.55, "y": 0.30, "role": "CM" },
+    { "player_id": 407, "team": "away", "x": 0.65, "y": 0.50, "role": "CDM" },
+    { "player_id": 408, "team": "away", "x": 0.55, "y": 0.70, "role": "CM" },
+    { "player_id": 409, "team": "away", "x": 0.30, "y": 0.18, "role": "LW" },
+    { "player_id": 410, "team": "away", "x": 0.20, "y": 0.50, "role": "ST" },
+    { "player_id": 411, "team": "away", "x": 0.30, "y": 0.82, "role": "RW" }
   ],
   "team_heatmap": {
     "grid_w": 12,
     "grid_h": 8,
     "home": [
-      [0, 0, 0, 1, 2, 4, 5, 4, 2, 1, 0, 0],
-      [0, 0, 1, 3, 5, 8, 9, 8, 5, 3, 1, 0],
-      [0, 1, 3, 5, 7, 10, 13, 10, 7, 5, 3, 1],
-      [1, 2, 4, 6, 9, 12, 16, 12, 9, 6, 4, 2],
-      [1, 2, 4, 6, 9, 12, 16, 12, 9, 6, 4, 2],
-      [0, 1, 3, 5, 7, 10, 13, 10, 7, 5, 3, 1],
-      [0, 0, 1, 3, 5, 8, 9, 8, 5, 3, 1, 0],
-      [0, 0, 0, 1, 2, 4, 5, 4, 2, 1, 0, 0]
+      [3, 5, 8, 12, 15, 18, 20, 22, 18, 12, 6, 3],
+      [5, 8, 12, 18, 24, 30, 34, 36, 28, 18, 9, 4],
+      [7, 11, 18, 26, 34, 42, 48, 46, 36, 24, 12, 6],
+      [8, 14, 22, 32, 42, 52, 58, 54, 44, 30, 15, 7],
+      [8, 14, 22, 32, 42, 52, 58, 54, 44, 30, 15, 7],
+      [7, 11, 18, 26, 34, 42, 48, 46, 36, 24, 12, 6],
+      [5, 8, 12, 18, 24, 30, 34, 36, 28, 18, 9, 4],
+      [3, 5, 8, 12, 15, 18, 20, 22, 18, 12, 6, 3]
     ],
     "away": [
-      [0, 0, 0, 1, 2, 3, 4, 5, 3, 2, 1, 0],
-      [0, 0, 1, 2, 4, 6, 7, 6, 4, 2, 1, 0],
-      [0, 1, 2, 4, 6, 8, 10, 8, 6, 4, 2, 1],
-      [1, 2, 3, 5, 7, 10, 12, 10, 7, 5, 3, 2],
-      [1, 2, 3, 5, 7, 10, 12, 10, 7, 5, 3, 2],
-      [0, 1, 2, 4, 6, 8, 10, 8, 6, 4, 2, 1],
-      [0, 0, 1, 2, 4, 6, 7, 6, 4, 2, 1, 0],
-      [0, 0, 0, 1, 2, 3, 4, 5, 3, 2, 1, 0]
+      [3, 5, 8, 12, 16, 18, 16, 14, 12, 9, 6, 3],
+      [4, 8, 12, 18, 24, 28, 26, 22, 18, 14, 9, 4],
+      [6, 10, 16, 24, 32, 38, 36, 30, 24, 18, 12, 6],
+      [7, 12, 20, 30, 40, 48, 46, 38, 30, 22, 14, 7],
+      [7, 12, 20, 30, 40, 48, 46, 38, 30, 22, 14, 7],
+      [6, 10, 16, 24, 32, 38, 36, 30, 24, 18, 12, 6],
+      [4, 8, 12, 18, 24, 28, 26, 22, 18, 14, 9, 4],
+      [3, 5, 8, 12, 16, 18, 16, 14, 12, 9, 6, 3]
     ]
   },
   "possession_timeline": {
     "minutes": [0, 15, 30, 45, 60, 75, 90],
-    "home": [50, 52, 54, 51, 53, 52, 52],
-    "away": [50, 48, 46, 49, 47, 48, 48]
+    "home": [54, 58, 62, 56, 52, 55, 54],
+    "away": [46, 42, 38, 44, 48, 45, 46]
   },
   "key_players": [
     {
       "player_id": 310,
-      "name": "Robert Lewandowski",
       "team": "home",
-      "goals": 2,
+      "goals": 3,
       "assists": 0,
-      "shots": 6,
-      "pass_accuracy": 85
+      "shots": 5,
+      "pass_accuracy": 85,
+      "touches": 38,
+      "duels_won": 10
     },
     {
       "player_id": 410,
-      "name": "Karim Benzema",
       "team": "away",
       "goals": 1,
       "assists": 1,
-      "shots": 5,
-      "pass_accuracy": 88
+      "shots": 4,
+      "pass_accuracy": 88,
+      "touches": 32,
+      "duels_won": 7
     },
     {
       "player_id": 307,
-      "name": "Pedri",
       "team": "home",
       "goals": 0,
       "assists": 2,
-      "shots": 2,
-      "pass_accuracy": 94
+      "shots": 1,
+      "pass_accuracy": 94,
+      "touches": 82,
+      "duels_won": 9
     }
-  ]
+  ],
+  "pass_network": {
+    "home": [
+      { "from": 303, "to": 307, "count": 38 },
+      { "from": 304, "to": 307, "count": 35 },
+      { "from": 307, "to": 306, "count": 28 },
+      { "from": 307, "to": 308, "count": 30 },
+      { "from": 306, "to": 309, "count": 24 },
+      { "from": 308, "to": 311, "count": 22 },
+      { "from": 302, "to": 309, "count": 20 },
+      { "from": 305, "to": 311, "count": 18 },
+      { "from": 306, "to": 310, "count": 16 },
+      { "from": 308, "to": 310, "count": 15 },
+      { "from": 309, "to": 310, "count": 14 },
+      { "from": 311, "to": 310, "count": 13 },
+      { "from": 307, "to": 310, "count": 12 },
+      { "from": 303, "to": 302, "count": 11 },
+      { "from": 304, "to": 305, "count": 10 }
+    ],
+    "away": [
+      { "from": 403, "to": 407, "count": 32 },
+      { "from": 404, "to": 407, "count": 30 },
+      { "from": 407, "to": 406, "count": 26 },
+      { "from": 407, "to": 408, "count": 24 },
+      { "from": 406, "to": 409, "count": 20 },
+      { "from": 408, "to": 411, "count": 18 },
+      { "from": 402, "to": 409, "count": 16 },
+      { "from": 405, "to": 411, "count": 15 },
+      { "from": 409, "to": 410, "count": 14 },
+      { "from": 411, "to": 410, "count": 13 },
+      { "from": 407, "to": 410, "count": 12 }
+    ]
+  },
+  "xg_timeline": {
+    "minutes": [0, 15, 30, 45, 60, 75, 90],
+    "home": [0, 0.71, 1.24, 1.55, 1.66, 2.24, 2.76],
+    "away": [0, 0.48, 0.89, 1.54, 2.06, 2.50, 2.88]
+  },
+  "pressing_intensity": {
+    "home": {
+      "high_press_sequences": 28,
+      "recoveries_in_final_third": 11,
+      "ppda": 7.8
+    },
+    "away": {
+      "high_press_sequences": 22,
+      "recoveries_in_final_third": 7,
+      "ppda": 9.6
+    }
+  }
 }
-

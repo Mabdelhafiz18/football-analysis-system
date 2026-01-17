@@ -1,10 +1,11 @@
 import express from 'express';
-import { getTacticalData, getHeatmap, getPassNetwork } from '../controllers/tacticalController.js';
+import { getTacticalData, getPassNetwork } from '../controllers/tacticalController.js';
 
 const router = express.Router();
 
 router.get('/match/:matchId', getTacticalData);
-router.get('/heatmap', getHeatmap);
+// GET /tactical/pass-network?match_id=1 for specific match
+// GET /tactical/pass-network for aggregated pass network
 router.get('/pass-network', getPassNetwork);
 
 export default router;

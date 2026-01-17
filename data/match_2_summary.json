@@ -1,5 +1,10 @@
 {
   "match_id": 2,
+  "home_team": "Barcelona",
+  "away_team": "Real Madrid",
+  "date": "2024-03-20T20:00:00Z",
+  "league": "La Liga",
+  "venue": "Camp Nou",
   "possession": {
     "home": 52,
     "away": 48
@@ -31,4 +36,3 @@
     "red_away": 0
   }
 }
-

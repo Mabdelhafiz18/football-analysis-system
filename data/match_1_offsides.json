@@ -3,61 +3,150 @@
     "incident_id": 1001,
     "minute": 12,
     "second": 34,
+    "timestamp": 754.0,
+    "frame_number": 22620,
     "team": "away",
-    "player": "Mohamed Salah",
+    "player_number": 11,
+    "position_x": 82.0,
+    "position_y": 45.0,
     "decision": "offside",
-    "margin_m": 0.15,
-    "confidence": 0.92
+    "margin_meters": 0.15,
+    "confidence": 0.92,
+    "attacker_position": {
+      "x": 82.0,
+      "y": 45.0
+    },
+    "defender_position": {
+      "x": 80.0,
+      "y": 45.0
+    },
+    "offside_line_x": 0.8,
+    "player_x": 0.82,
+    "player_y": 0.45
   },
   {
     "incident_id": 1002,
     "minute": 28,
     "second": 17,
+    "timestamp": 1697.0,
+    "frame_number": 50910,
     "team": "home",
-    "player": "Marcus Rashford",
+    "player_number": 10,
+    "position_x": 28.0,
+    "position_y": 52.0,
     "decision": "onside",
-    "margin_m": 0.08,
-    "confidence": 0.88
+    "margin_meters": 0.08,
+    "confidence": 0.88,
+    "attacker_position": {
+      "x": 28.0,
+      "y": 52.0
+    },
+    "defender_position": {
+      "x": 30.0,
+      "y": 52.0
+    },
+    "offside_line_x": 0.3,
+    "player_x": 0.28,
+    "player_y": 0.52
   },
   {
     "incident_id": 1003,
     "minute": 35,
     "second": 52,
+    "timestamp": 2152.0,
+    "frame_number": 64560,
     "team": "away",
-    "player": "Darwin Núñez",
+    "player_number": 9,
+    "position_x": 78.0,
+    "position_y": 38.0,
     "decision": "offside",
-    "margin_m": 0.32,
-    "confidence": 0.95
+    "margin_meters": 0.32,
+    "confidence": 0.95,
+    "attacker_position": {
+      "x": 78.0,
+      "y": 38.0
+    },
+    "defender_position": {
+      "x": 75.0,
+      "y": 38.0
+    },
+    "offside_line_x": 0.75,
+    "player_x": 0.78,
+    "player_y": 0.38
   },
   {
     "incident_id": 1004,
     "minute": 47,
     "second": 8,
+    "timestamp": 2828.0,
+    "frame_number": 84840,
     "team": "away",
-    "player": "Luis Díaz",
+    "player_number": 7,
+    "position_x": 63.0,
+    "position_y": 25.0,
     "decision": "offside",
-    "margin_m": 0.22,
-    "confidence": 0.91
+    "margin_meters": 0.22,
+    "confidence": 0.91,
+    "attacker_position": {
+      "x": 63.0,
+      "y": 25.0
+    },
+    "defender_position": {
+      "x": 60.0,
+      "y": 25.0
+    },
+    "offside_line_x": 0.6,
+    "player_x": 0.63,
+    "player_y": 0.25
   },
   {
     "incident_id": 1005,
     "minute": 61,
     "second": 43,
+    "timestamp": 3703.0,
+    "frame_number": 111090,
     "team": "home",
-    "player": "Antony",
+    "player_number": 21,
+    "position_x": 42.0,
+    "position_y": 68.0,
     "decision": "offside",
-    "margin_m": 0.12,
-    "confidence": 0.89
+    "margin_meters": 0.12,
+    "confidence": 0.89,
+    "attacker_position": {
+      "x": 42.0,
+      "y": 68.0
+    },
+    "defender_position": {
+      "x": 40.0,
+      "y": 68.0
+    },
+    "offside_line_x": 0.4,
+    "player_x": 0.42,
+    "player_y": 0.68
   },
   {
     "incident_id": 1006,
     "minute": 78,
     "second": 29,
+    "timestamp": 4709.0,
+    "frame_number": 141270,
     "team": "away",
-    "player": "Cody Gakpo",
+    "player_number": 18,
+    "position_x": 88.0,
+    "position_y": 42.0,
     "decision": "offside",
-    "margin_m": 0.45,
-    "confidence": 0.97
+    "margin_meters": 0.45,
+    "confidence": 0.97,
+    "attacker_position": {
+      "x": 88.0,
+      "y": 42.0
+    },
+    "defender_position": {
+      "x": 85.0,
+      "y": 42.0
+    },
+    "offside_line_x": 0.85,
+    "player_x": 0.88,
+    "player_y": 0.42
   }
 ]
-

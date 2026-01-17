@@ -198,7 +198,17 @@ export const generateTacticalReport = async (match: Match, tactical: TacticalDat
   doc.save(`Tactical_Report_${match.homeTeam}_vs_${match.awayTeam}.pdf`);
 };
 
-export const generateAnalyticsReport = async (stats: any) => {
+export const generateAnalyticsReport = async (analytics: {
+  totalMatches: number;
+  completedMatches: number;
+  totalGoals: number;
+  avgGoalsPerMatch: number;
+  decisions: { total: number; offsides: number; fouls: number };
+  shots: { total: number; goals: number; avgXG: number };
+  cards: { yellow: number; red: number };
+  leagueBreakdown: Record<string, { total: number; completed: number }>;
+  statusBreakdown: { completed: number; processing: number; pending: number; failed: number };
+}) => {
   const doc = new jsPDF();
   addBranding(doc, "System Analytics Overview");
   
@@ -217,16 +227,105 @@ export const generateAnalyticsReport = async (stats: any) => {
   autoTable(doc, {
     startY: yPos,
     body: [
-      ['Total Matches Processed', stats.totalMatches],
-      ['Completed Successfully', stats.completedMatches],
-      ['Total Decisions Reviewed', "156"], // Mocked as in Analytics.tsx
-      ['AI Decision Accuracy', "94.2%"],
+      ['Total Matches Processed', analytics.totalMatches.toString()],
+      ['Completed Successfully', analytics.completedMatches.toString()],
+      ['Total Goals Scored', analytics.totalGoals.toString()],
+      ['Average Goals per Match', analytics.avgGoalsPerMatch.toFixed(2)],
+      ['Total Decisions Reviewed', analytics.decisions.total.toString()],
+      ['AI Decision Accuracy', "94.2%"], // Still mocked (requires referee feedback)
     ],
     theme: 'grid',
     columnStyles: {
       0: { fontStyle: 'bold', fillColor: [240, 240, 240] },
       1: { halign: 'center' }
     }
+  });
+  
+  // @ts-ignore
+  yPos = doc.lastAutoTable.finalY + 20;
+  
+  // Decision Breakdown
+  doc.setFontSize(14);
+  doc.text("Decision Breakdown", 20, yPos);
+  yPos += 10;
+  
+  autoTable(doc, {
+    startY: yPos,
+    head: [['Decision Type', 'Count']],
+    body: [
+      ['Offside Decisions', analytics.decisions.offsides.toString()],
+      ['Foul Decisions', analytics.decisions.fouls.toString()],
+      ['Yellow Cards Issued', analytics.cards.yellow.toString()],
+      ['Red Cards Issued', analytics.cards.red.toString()],
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: BRAND_COLOR },
+  });
+  
+  // @ts-ignore
+  yPos = doc.lastAutoTable.finalY + 20;
+  
+  // Shooting Statistics
+  doc.setFontSize(14);
+  doc.text("Shooting Statistics", 20, yPos);
+  yPos += 10;
+  
+  autoTable(doc, {
+    startY: yPos,
+    head: [['Metric', 'Value']],
+    body: [
+      ['Total Shots', analytics.shots.total.toString()],
+      ['Goals Scored', analytics.shots.goals.toString()],
+      ['Average xG per Match', analytics.shots.avgXG.toFixed(2)],
+      ['Shot Conversion Rate', analytics.shots.total > 0 ? `${((analytics.shots.goals / analytics.shots.total) * 100).toFixed(1)}%` : 'N/A'],
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: BRAND_COLOR },
+  });
+  
+  // @ts-ignore
+  yPos = doc.lastAutoTable.finalY + 20;
+  
+  // League Breakdown
+  const leagueData = Object.entries(analytics.leagueBreakdown);
+  if (leagueData.length > 0) {
+    doc.setFontSize(14);
+    doc.text("Matches by League", 20, yPos);
+    yPos += 10;
+    
+    autoTable(doc, {
+      startY: yPos,
+      head: [['League', 'Total', 'Completed', 'Completion Rate']],
+      body: leagueData.map(([league, data]) => [
+        league,
+        data.total.toString(),
+        data.completed.toString(),
+        data.total > 0 ? `${((data.completed / data.total) * 100).toFixed(0)}%` : 'N/A',
+      ]),
+      theme: 'striped',
+      headStyles: { fillColor: BRAND_COLOR },
+    });
+    
+    // @ts-ignore
+    yPos = doc.lastAutoTable.finalY + 20;
+  }
+  
+  // Processing Status
+  doc.setFontSize(14);
+  doc.text("Processing Status", 20, yPos);
+  yPos += 10;
+  
+  autoTable(doc, {
+    startY: yPos,
+    head: [['Status', 'Count', 'Percentage']],
+    body: [
+      ['Completed', analytics.statusBreakdown.completed.toString(), analytics.totalMatches > 0 ? `${((analytics.statusBreakdown.completed / analytics.totalMatches) * 100).toFixed(0)}%` : '0%'],
+      ['Processing', analytics.statusBreakdown.processing.toString(), analytics.totalMatches > 0 ? `${((analytics.statusBreakdown.processing / analytics.totalMatches) * 100).toFixed(0)}%` : '0%'],
+      ['Pending', analytics.statusBreakdown.pending.toString(), analytics.totalMatches > 0 ? `${((analytics.statusBreakdown.pending / analytics.totalMatches) * 100).toFixed(0)}%` : '0%'],
+      ['Failed', analytics.statusBreakdown.failed.toString(), analytics.totalMatches > 0 ? `${((analytics.statusBreakdown.failed / analytics.totalMatches) * 100).toFixed(0)}%` : '0%'],
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: BRAND_COLOR },
   });
   
   doc.save(`System_Analytics_Report.pdf`);

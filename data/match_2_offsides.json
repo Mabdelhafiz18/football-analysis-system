@@ -2,62 +2,176 @@
   {
     "incident_id": 2001,
     "minute": 8,
-    "second": 15,
-    "team": "home",
-    "player": "Robert Lewandowski",
+    "second": 12,
+    "timestamp": 492.0,
+    "frame_number": 14760,
+    "team": "away",
+    "player_number": 20,
+    "position_x": 85.0,
+    "position_y": 32.0,
     "decision": "offside",
-    "margin_m": 0.18,
-    "confidence": 0.93
+    "margin_meters": 0.28,
+    "confidence": 0.94,
+    "attacker_position": {
+      "x": 85.0,
+      "y": 32.0
+    },
+    "defender_position": {
+      "x": 82.0,
+      "y": 32.0
+    },
+    "offside_line_x": 0.82,
+    "player_x": 0.85,
+    "player_y": 0.32
   },
   {
     "incident_id": 2002,
     "minute": 19,
-    "second": 42,
+    "second": 45,
+    "timestamp": 1185.0,
+    "frame_number": 35550,
     "team": "home",
-    "player": "Ousmane Dembélé",
+    "player_number": 9,
+    "position_x": 22.0,
+    "position_y": 48.0,
     "decision": "onside",
-    "margin_m": 0.06,
-    "confidence": 0.87
+    "margin_meters": 0.05,
+    "confidence": 0.86,
+    "attacker_position": {
+      "x": 22.0,
+      "y": 48.0
+    },
+    "defender_position": {
+      "x": 24.0,
+      "y": 48.0
+    },
+    "offside_line_x": 0.24,
+    "player_x": 0.22,
+    "player_y": 0.48
   },
   {
     "incident_id": 2003,
-    "minute": 33,
-    "second": 28,
-    "team": "home",
-    "player": "Ferran Torres",
+    "minute": 32,
+    "second": 18,
+    "timestamp": 1938.0,
+    "frame_number": 58140,
+    "team": "away",
+    "player_number": 9,
+    "position_x": 78.0,
+    "position_y": 40.0,
     "decision": "offside",
-    "margin_m": 0.25,
-    "confidence": 0.90
+    "margin_meters": 0.18,
+    "confidence": 0.91,
+    "attacker_position": {
+      "x": 78.0,
+      "y": 40.0
+    },
+    "defender_position": {
+      "x": 76.0,
+      "y": 40.0
+    },
+    "offside_line_x": 0.76,
+    "player_x": 0.78,
+    "player_y": 0.40
   },
   {
     "incident_id": 2004,
-    "minute": 44,
-    "second": 56,
-    "team": "away",
-    "player": "Vinicius Jr",
+    "minute": 51,
+    "second": 33,
+    "timestamp": 3093.0,
+    "frame_number": 92790,
+    "team": "home",
+    "player_number": 7,
+    "position_x": 18.0,
+    "position_y": 22.0,
     "decision": "offside",
-    "margin_m": 0.14,
-    "confidence": 0.91
+    "margin_meters": 0.35,
+    "confidence": 0.93,
+    "attacker_position": {
+      "x": 18.0,
+      "y": 22.0
+    },
+    "defender_position": {
+      "x": 21.0,
+      "y": 22.0
+    },
+    "offside_line_x": 0.21,
+    "player_x": 0.18,
+    "player_y": 0.22
   },
   {
     "incident_id": 2005,
-    "minute": 67,
-    "second": 11,
-    "team": "home",
-    "player": "Robert Lewandowski",
+    "minute": 66,
+    "second": 8,
+    "timestamp": 3968.0,
+    "frame_number": 119040,
+    "team": "away",
+    "player_number": 21,
+    "position_x": 92.0,
+    "position_y": 58.0,
     "decision": "offside",
-    "margin_m": 0.38,
-    "confidence": 0.96
+    "margin_meters": 0.52,
+    "confidence": 0.98,
+    "attacker_position": {
+      "x": 92.0,
+      "y": 58.0
+    },
+    "defender_position": {
+      "x": 86.0,
+      "y": 58.0
+    },
+    "offside_line_x": 0.86,
+    "player_x": 0.92,
+    "player_y": 0.58
   },
   {
     "incident_id": 2006,
-    "minute": 82,
-    "second": 33,
+    "minute": 77,
+    "second": 42,
+    "timestamp": 4662.0,
+    "frame_number": 139860,
+    "team": "home",
+    "player_number": 11,
+    "position_x": 25.0,
+    "position_y": 75.0,
+    "decision": "offside",
+    "margin_meters": 0.12,
+    "confidence": 0.87,
+    "attacker_position": {
+      "x": 25.0,
+      "y": 75.0
+    },
+    "defender_position": {
+      "x": 26.0,
+      "y": 75.0
+    },
+    "offside_line_x": 0.26,
+    "player_x": 0.25,
+    "player_y": 0.75
+  },
+  {
+    "incident_id": 2007,
+    "minute": 85,
+    "second": 19,
+    "timestamp": 5119.0,
+    "frame_number": 153570,
     "team": "away",
-    "player": "Rodrygo",
-    "decision": "onside",
-    "margin_m": 0.09,
-    "confidence": 0.85
+    "player_number": 20,
+    "position_x": 88.0,
+    "position_y": 35.0,
+    "decision": "offside",
+    "margin_meters": 0.42,
+    "confidence": 0.96,
+    "attacker_position": {
+      "x": 88.0,
+      "y": 35.0
+    },
+    "defender_position": {
+      "x": 84.0,
+      "y": 35.0
+    },
+    "offside_line_x": 0.84,
+    "player_x": 0.88,
+    "player_y": 0.35
   }
 ]
-

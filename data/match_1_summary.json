@@ -1,5 +1,10 @@
 {
   "match_id": 1,
+  "home_team": "Manchester United",
+  "away_team": "Liverpool",
+  "date": "2024-03-15T15:00:00Z",
+  "league": "Premier League",
+  "venue": "Old Trafford",
   "possession": {
     "home": 58,
     "away": 42
@@ -17,18 +22,17 @@
     "away": 1.12
   },
   "fouls": {
-    "home": 11,
-    "away": 15
-  },
-  "offsides": {
     "home": 3,
     "away": 5
   },
+  "offsides": {
+    "home": 2,
+    "away": 4
+  },
   "cards": {
-    "yellow_home": 2,
-    "yellow_away": 4,
+    "yellow_home": 0,
+    "yellow_away": 3,
     "red_home": 0,
     "red_away": 1
   }
 }
-

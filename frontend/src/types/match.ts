@@ -21,6 +21,7 @@ export interface MatchSummary {
   matchId: number;
   possession: { home: number; away: number };
   shots: { home: number; away: number };
+  shotsOnTarget?: { home: number; away: number };
   goals: { home: number; away: number };
   xg: { home: number; away: number };
   fouls: { home: number; away: number };
@@ -50,6 +51,21 @@ export interface TacticalData {
     away: number[];
   };
   keyPlayers: KeyPlayer[];
+  xgTimeline?: {
+    minutes: number[];
+    home: number[];
+    away: number[];
+  };
+  pressingIntensity?: {
+    home: PressingStats;
+    away: PressingStats;
+  };
+}
+
+export interface PressingStats {
+  highPressSequences: number;
+  recoveriesInFinalThird: number;
+  ppda: number;
 }
 
 export interface PlayerPosition {
@@ -62,12 +78,13 @@ export interface PlayerPosition {
 
 export interface KeyPlayer {
   playerId: number;
-  name: string;
   team: Team;
   goals: number;
   assists: number;
   shots: number;
   passAccuracy: number;
+  touches?: number;
+  duelsWon?: number;
 }
 
 // Pass network
@@ -90,18 +107,31 @@ export interface HeatmapPoint {
 
 // Shot prediction
 export type ShotOutcome = "goal" | "saved" | "off_target" | "blocked" | "woodwork";
+export type BodyPart = "right_foot" | "left_foot" | "head" | "other";
+export type ShotType = "open_play" | "free_kick" | "penalty" | "header" | "corner";
 
 export interface ShotPrediction {
   id: string;
   matchId: number;
   team: Team;
-  player: string;
+  playerNumber: number;
   x: number;
   y: number;
   xg: number;
   outcome: ShotOutcome;
   minute: number;
   second: number;
+  timestamp?: number;
+  frameNumber?: number;
+  positionX?: number;
+  positionY?: number;
+  targetX?: number;
+  targetY?: number;
+  isGoal?: boolean;
+  isOnTarget?: boolean;
+  goalProbability?: number;
+  bodyPart?: BodyPart;
+  shotType?: ShotType;
 }
 
 // API response types
@@ -118,6 +148,7 @@ export interface ApiMatchSummary {
   match_id: number;
   possession: { home: number; away: number };
   shots: { home: number; away: number };
+  shots_on_target?: { home: number; away: number };
   goals: { home: number; away: number };
   xg: { home: number; away: number };
   fouls: { home: number; away: number };
@@ -131,16 +162,27 @@ export interface ApiMatchSummary {
 }
 
 export interface ApiShotPrediction {
-  shot_id: string;
+  shot_id: number;
   match_id: number;
   team: string;
-  player: string;
-  x: number;
-  y: number;
+  player_number: number;
+  x?: number;
+  y?: number;
+  position_x?: number;
+  position_y?: number;
+  target_x?: number;
+  target_y?: number;
   xg: number;
   outcome: string;
   minute: number;
   second: number;
+  timestamp?: number;
+  frame_number?: number;
+  is_goal?: boolean;
+  is_on_target?: boolean;
+  goal_probability?: number;
+  body_part?: string;
+  shot_type?: string;
 }
 
 export interface ApiTacticalData {
@@ -166,12 +208,30 @@ export interface ApiTacticalData {
   };
   key_players: {
     player_id: number;
-    name: string;
     team: string;
     goals: number;
     assists: number;
     shots: number;
     pass_accuracy: number;
+    touches?: number;
+    duels_won?: number;
   }[];
+  xg_timeline?: {
+    minutes: number[];
+    home: number[];
+    away: number[];
+  };
+  pressing_intensity?: {
+    home: {
+      high_press_sequences: number;
+      recoveries_in_final_third: number;
+      ppda: number;
+    };
+    away: {
+      high_press_sequences: number;
+      recoveries_in_final_third: number;
+      ppda: number;
+    };
+  };
 }
 

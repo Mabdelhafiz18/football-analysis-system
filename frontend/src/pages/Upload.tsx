@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -11,7 +11,8 @@ import {
   FileVideo,
 } from "lucide-react";
 import { AppLayout } from "@/components/layout";
-import { useUploadVideo } from "@/hooks/useMatches";
+import { useUploadVideo, useMatchStatus } from "@/hooks/useMatches";
+import { useUpload } from "@/contexts/UploadContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,12 +25,14 @@ export default function Upload() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadMutation = useUploadVideo();
+  const { currentUpload, startBackgroundUpload, clearUpload } = useUpload();
 
   const [status, setStatus] = useState<UploadStatus>("idle");
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [matchId, setMatchId] = useState<number | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -38,6 +41,26 @@ export default function Upload() {
     date: "",
     league: "",
   });
+
+  // Poll match status when we have a matchId
+  const { data: matchStatus } = useMatchStatus(matchId, {
+    enabled: status === "processing" && !!matchId,
+  });
+
+  // React to status changes from server
+  useEffect(() => {
+    if (!matchStatus) return;
+
+    // Update progress from server
+    setProgress(matchStatus.progress);
+
+    if (matchStatus.status === "completed") {
+      setStatus("success");
+    } else if (matchStatus.status === "failed") {
+      setStatus("error");
+      setError(matchStatus.error || "Processing failed");
+    }
+  }, [matchStatus]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -80,6 +103,7 @@ export default function Upload() {
     setFile(null);
     setStatus("idle");
     setProgress(0);
+    setMatchId(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -96,34 +120,19 @@ export default function Upload() {
 
     setStatus("uploading");
     setError(null);
-
-    // Simulate upload progress
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 90) {
-          clearInterval(progressInterval);
-          return prev;
-        }
-        return prev + 10;
-      });
-    }, 300);
+    setProgress(0);
 
     try {
-      await uploadMutation.mutateAsync({
+      const response = await uploadMutation.mutateAsync({
         file,
         metadata: formData,
       });
 
-      clearInterval(progressInterval);
-      setProgress(100);
+      // Store match_id and start polling (both local and background)
+      setMatchId(response.match_id);
+      startBackgroundUpload(response.match_id, formData.homeTeam, formData.awayTeam);
       setStatus("processing");
-
-      // Simulate processing
-      setTimeout(() => {
-        setStatus("success");
-      }, 2000);
     } catch (err) {
-      clearInterval(progressInterval);
       setStatus("error");
       setError("Upload failed. Please try again.");
     }
@@ -148,7 +157,7 @@ export default function Upload() {
             isDragging
               ? "border-primary bg-primary/5"
               : "border-border hover:border-primary/50",
-            status !== "idle" && status !== "selected" && "pointer-events-none opacity-60"
+            (status === "uploading" || status === "processing") && "pointer-events-none opacity-60"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -251,14 +260,21 @@ export default function Upload() {
                   Upload Complete!
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Your match is being analyzed by our AI
+                  Your match has been analyzed successfully
                 </p>
                 <div className="flex items-center justify-center gap-3">
-                  <Button variant="outline" onClick={() => navigate("/dashboard")}>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      clearUpload();
+                      navigate("/dashboard");
+                    }}
+                  >
                     Go to Dashboard
                   </Button>
                   <Button
                     onClick={() => {
+                      clearUpload();
                       handleRemoveFile();
                       setFormData({ homeTeam: "", awayTeam: "", date: "", league: "" });
                     }}

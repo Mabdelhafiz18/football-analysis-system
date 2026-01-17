@@ -3,81 +3,168 @@
     "foul_id": 1001,
     "minute": 5,
     "second": 23,
+    "timestamp": 323.0,
+    "frame_number": 9690,
     "team": "away",
-    "player": "Fabinho",
+    "player_number": 3,
+    "position_x": 60.0,
+    "position_y": 40.0,
+    "foul_type": "tackle",
     "severity": "medium",
-    "card": "yellow",
-    "confidence": 0.88
+    "card_type": "yellow",
+    "confidence": 0.88,
+    "contact_point": {
+      "x": 60.0,
+      "y": 40.0
+    },
+    "x": 0.6,
+    "y": 0.4
   },
   {
     "foul_id": 1002,
     "minute": 18,
     "second": 47,
+    "timestamp": 1127.0,
+    "frame_number": 33810,
     "team": "home",
-    "player": "Casemiro",
+    "player_number": 18,
+    "position_x": 30.0,
+    "position_y": 60.0,
+    "foul_type": "obstruction",
     "severity": "low",
-    "card": "none",
-    "confidence": 0.82
+    "card_type": "none",
+    "confidence": 0.82,
+    "contact_point": {
+      "x": 30.0,
+      "y": 60.0
+    },
+    "x": 0.3,
+    "y": 0.6
   },
   {
     "foul_id": 1003,
     "minute": 24,
     "second": 12,
+    "timestamp": 1452.0,
+    "frame_number": 43560,
     "team": "away",
-    "player": "Virgil van Dijk",
+    "player_number": 4,
+    "position_x": 70.0,
+    "position_y": 30.0,
+    "foul_type": "push",
     "severity": "low",
-    "card": "none",
-    "confidence": 0.79
+    "card_type": "none",
+    "confidence": 0.79,
+    "contact_point": {
+      "x": 70.0,
+      "y": 30.0
+    },
+    "x": 0.7,
+    "y": 0.3
   },
   {
     "foul_id": 1004,
     "minute": 31,
     "second": 35,
+    "timestamp": 1895.0,
+    "frame_number": 56850,
     "team": "away",
-    "player": "Ibrahima Konaté",
+    "player_number": 5,
+    "position_x": 80.0,
+    "position_y": 50.0,
+    "foul_type": "tackle",
     "severity": "medium",
-    "card": "yellow",
-    "confidence": 0.91
+    "card_type": "yellow",
+    "confidence": 0.91,
+    "contact_point": {
+      "x": 80.0,
+      "y": 50.0
+    },
+    "x": 0.8,
+    "y": 0.5
   },
   {
     "foul_id": 1005,
     "minute": 42,
     "second": 8,
+    "timestamp": 2528.0,
+    "frame_number": 75840,
     "team": "home",
-    "player": "Lisandro Martínez",
+    "player_number": 6,
+    "position_x": 40.0,
+    "position_y": 70.0,
+    "foul_type": "holding",
     "severity": "low",
-    "card": "none",
-    "confidence": 0.85
+    "card_type": "none",
+    "confidence": 0.85,
+    "contact_point": {
+      "x": 40.0,
+      "y": 70.0
+    },
+    "x": 0.4,
+    "y": 0.7
   },
   {
     "foul_id": 1006,
     "minute": 56,
     "second": 54,
+    "timestamp": 3414.0,
+    "frame_number": 102420,
     "team": "away",
-    "player": "Jordan Henderson",
+    "player_number": 14,
+    "position_x": 65.0,
+    "position_y": 55.0,
+    "foul_type": "tackle",
     "severity": "medium",
-    "card": "yellow",
-    "confidence": 0.89
+    "card_type": "yellow",
+    "confidence": 0.89,
+    "contact_point": {
+      "x": 65.0,
+      "y": 55.0
+    },
+    "x": 0.65,
+    "y": 0.55
   },
   {
     "foul_id": 1007,
     "minute": 64,
     "second": 19,
+    "timestamp": 3859.0,
+    "frame_number": 115770,
     "team": "away",
-    "player": "Andy Robertson",
+    "player_number": 26,
+    "position_x": 75.0,
+    "position_y": 80.0,
+    "foul_type": "tackle",
     "severity": "high",
-    "card": "red",
-    "confidence": 0.94
+    "card_type": "red",
+    "confidence": 0.94,
+    "contact_point": {
+      "x": 75.0,
+      "y": 80.0
+    },
+    "x": 0.75,
+    "y": 0.8
   },
   {
     "foul_id": 1008,
     "minute": 73,
     "second": 41,
+    "timestamp": 4421.0,
+    "frame_number": 132630,
     "team": "home",
-    "player": "Raphaël Varane",
+    "player_number": 19,
+    "position_x": 25.0,
+    "position_y": 45.0,
+    "foul_type": "push",
     "severity": "low",
-    "card": "none",
-    "confidence": 0.81
+    "card_type": "none",
+    "confidence": 0.81,
+    "contact_point": {
+      "x": 25.0,
+      "y": 45.0
+    },
+    "x": 0.25,
+    "y": 0.45
   }
 ]
-

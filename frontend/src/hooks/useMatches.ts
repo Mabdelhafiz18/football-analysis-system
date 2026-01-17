@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, keepPreviousData } from "@tanstack/react-query";
 import type {
   Match,
   MatchSummary,
@@ -34,6 +34,7 @@ function transformSummary(data: ApiMatchSummary): MatchSummary {
     matchId: data.match_id,
     possession: data.possession,
     shots: data.shots,
+    shotsOnTarget: data.shots_on_target,
     goals: data.goals,
     xg: data.xg,
     fouls: data.fouls,
@@ -68,29 +69,59 @@ function transformTactical(data: ApiTacticalData): TacticalData {
     possessionTimeline: data.possession_timeline,
     keyPlayers: data.key_players.map((p) => ({
       playerId: p.player_id,
-      name: p.name,
       team: p.team as Team,
       goals: p.goals,
       assists: p.assists,
       shots: p.shots,
       passAccuracy: p.pass_accuracy,
+      touches: p.touches,
+      duelsWon: p.duels_won,
     })),
+    xgTimeline: data.xg_timeline,
+    pressingIntensity: data.pressing_intensity ? {
+      home: {
+        highPressSequences: data.pressing_intensity.home.high_press_sequences,
+        recoveriesInFinalThird: data.pressing_intensity.home.recoveries_in_final_third,
+        ppda: data.pressing_intensity.home.ppda,
+      },
+      away: {
+        highPressSequences: data.pressing_intensity.away.high_press_sequences,
+        recoveriesInFinalThird: data.pressing_intensity.away.recoveries_in_final_third,
+        ppda: data.pressing_intensity.away.ppda,
+      },
+    } : undefined,
   };
 }
 
 // Transform API shot prediction to frontend type
 function transformShotPrediction(data: ApiShotPrediction): ShotPrediction {
+  // Position can come from x/y (normalized 0-1) or position_x/position_y (meters)
+  // Convert meters to normalized if needed (assuming 105m x 68m pitch)
+  const x = data.x ?? (data.position_x ? data.position_x / 105 : 0.5);
+  const y = data.y ?? (data.position_y ? data.position_y / 68 : 0.5);
+
   return {
-    id: data.shot_id,
+    id: String(data.shot_id),
     matchId: data.match_id,
     team: data.team as Team,
-    player: data.player,
-    x: data.x,
-    y: data.y,
+    playerNumber: data.player_number,
+    x,
+    y,
     xg: data.xg,
     outcome: data.outcome as ShotOutcome,
     minute: data.minute,
     second: data.second,
+    timestamp: data.timestamp,
+    frameNumber: data.frame_number,
+    positionX: data.position_x,
+    positionY: data.position_y,
+    targetX: data.target_x,
+    targetY: data.target_y,
+    isGoal: data.is_goal,
+    isOnTarget: data.is_on_target,
+    goalProbability: data.goal_probability,
+    bodyPart: data.body_part as ShotPrediction["bodyPart"],
+    shotType: data.shot_type as ShotPrediction["shotType"],
   };
 }
 
@@ -145,10 +176,13 @@ async function fetchHeatmap(): Promise<HeatmapPoint[]> {
   }
 }
 
-// Fetch pass network
-async function fetchPassNetwork(): Promise<PassNetwork> {
+// Fetch pass network - optional matchId for specific match, otherwise aggregated
+async function fetchPassNetwork(matchId?: number): Promise<PassNetwork> {
   try {
-    const response = await fetch(`${API_BASE_URL}/tactical/pass-network`);
+    const url = matchId
+      ? `${API_BASE_URL}/tactical/pass-network?match_id=${matchId}`
+      : `${API_BASE_URL}/tactical/pass-network`;
+    const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch pass network");
     return await response.json();
   } catch (error) {
@@ -187,6 +221,75 @@ async function uploadVideo(file: File, metadata: { homeTeam: string; awayTeam: s
   return await response.json();
 }
 
+// Match status response type
+interface MatchStatusResponse {
+  match_id: number;
+  status: "pending" | "processing" | "completed" | "failed";
+  progress: number;
+  message?: string;
+  processed_at?: string;
+  error?: string;
+}
+
+// Fetch match status (for polling)
+async function fetchMatchStatus(matchId: number): Promise<MatchStatusResponse> {
+  const response = await fetch(`${API_BASE_URL}/matches/${matchId}/status`);
+  if (!response.ok) throw new Error("Failed to fetch match status");
+  return await response.json();
+}
+
+// Match events response type
+interface MatchEventsResponse {
+  offsides: Array<{
+    incident_id: number;
+    minute: number;
+    second: number;
+    team: string;
+    player_number: number;
+    decision: string;
+
+    confidence: number;
+    offside_line_x?: number;
+  }>;
+  fouls: Array<{
+    foul_id: number;
+    minute: number;
+    second: number;
+    team: string;
+    player_number: number;
+    foul_type: string;
+    card_type: string;
+    confidence: number;
+    x?: number;
+    y?: number;
+  }>;
+  shots: Array<{
+    shot_id: number;
+    minute: number;
+    second: number;
+    team: string;
+    player_number: number;
+    is_goal: boolean;
+    xg: number;
+  }>;
+}
+
+// Fetch match events (offsides, fouls, shots)
+async function fetchMatchEvents(
+  matchId: number,
+  filters?: { type?: string; team?: string }
+): Promise<MatchEventsResponse> {
+  let url = `${API_BASE_URL}/matches/${matchId}/events`;
+  const params = new URLSearchParams();
+  if (filters?.type) params.append("type", filters.type);
+  if (filters?.team) params.append("team", filters.team);
+  if (params.toString()) url += `?${params.toString()}`;
+
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Failed to fetch match events");
+  return await response.json();
+}
+
 // Hooks
 export function useMatches() {
   return useQuery({
@@ -209,7 +312,7 @@ export function useTactical(matchId: number) {
   return useQuery({
     queryKey: ["tactical", matchId],
     queryFn: () => fetchTactical(matchId),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 10 * 1000, // Reduced to 10s for testing
     enabled: !!matchId,
   });
 }
@@ -222,18 +325,150 @@ export function useHeatmap() {
   });
 }
 
-export function usePassNetwork() {
+export function usePassNetwork(matchId?: number) {
   return useQuery({
-    queryKey: ["passNetwork"],
-    queryFn: fetchPassNetwork,
+    queryKey: matchId ? ["passNetwork", matchId] : ["passNetwork"],
+    queryFn: () => fetchPassNetwork(matchId),
     staleTime: 5 * 60 * 1000,
   });
+}
+
+// Tracking Data Types
+export interface TrackingPlayer {
+  player_id: number;
+  team: "home" | "away";
+  x: number;
+  y: number;
+  bbox?: [number, number, number, number]; // [x1, y1, x2, y2]
+}
+
+export interface TrackingFrame {
+  frame: number;
+  t?: number;
+  timestamp?: number;
+  players: TrackingPlayer[];
+  ball: {
+    x: number;
+    y: number;
+    bbox?: [number, number, number, number];
+  };
+}
+
+// Buffer duration in seconds
+const BUFFER_DURATION = 10;
+
+// Fetch tracking data for a time range
+async function fetchTrackingRange(matchId: number, startTime: number, endTime: number): Promise<{ frames: TrackingFrame[], fps: number, pitch: any } | null> {
+  try {
+    const url = `${API_BASE_URL}/matches/${matchId}/tracking/range?start_time=${startTime}&end_time=${endTime}`;
+    console.log(`[Tracking] Fetching range: ${startTime}-${endTime} for match ${matchId}`);
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`[Tracking] Failed to fetch range: ${response.status} ${response.statusText}`);
+      return null;
+    }
+    const data = await response.json();
+    console.log(`[Tracking] Received ${data?.frames?.length} frames for range ${startTime}-${endTime}, first frame t=${data?.frames?.[0]?.timestamp}`);
+    return data;
+  } catch (error) {
+    console.error("[Tracking] Error fetching range:", error);
+    return null;
+  }
+}
+
+// Hook for real-time tracking data with buffering
+export function useTracking(matchId: number, timestamp: number, enabled: boolean = true) {
+  // Calculate which buffer chunk we need (e.g., 0-10s, 10-20s)
+  const chunkIndex = Math.floor(timestamp / BUFFER_DURATION);
+  const startTime = chunkIndex * BUFFER_DURATION;
+  const endTime = startTime + BUFFER_DURATION;
+
+  // 1. Fetch the chunk of data
+  const { data: bufferData, isLoading, isError } = useQuery({
+    queryKey: ["trackingRange", matchId, chunkIndex],
+    queryFn: () => fetchTrackingRange(matchId, startTime, endTime),
+    staleTime: 60 * 1000,
+    placeholderData: keepPreviousData,
+    enabled: enabled && matchId > 0,
+    gcTime: 2 * 60 * 1000, // Keep unused buffers for a bit
+  });
+
+  // 2. Extract the specific frame for the current timestamp from the buffer
+  if (!bufferData || !bufferData.frames) {
+    // if (enabled && (isLoading || isError)) {
+    //     console.log(`[Tracking] No buffer. Loading: ${isLoading}, Error: ${isError}`);
+    // }
+    return { data: null };
+  }
+
+  // Find the closest frame in the loaded buffer
+  // Assuming frames are sorted by timestamp/t
+  const targetTime = timestamp;
+  let closestFrame = null;
+  let minDiff = Number.MAX_VALUE;
+
+  for (const frame of bufferData.frames) {
+    const t = frame.t !== undefined ? frame.t : frame.timestamp;
+
+    if (t === undefined) continue;
+
+    const diff = Math.abs(t - targetTime);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestFrame = frame;
+    }
+    // Optimization: if we passed the target time by more than 0.1s, stop searching
+    // (Available since frames are sorted)
+    if (t > targetTime + 0.2) break;
+  }
+
+  // Only return frame if it's reasonably close (e.g. within 0.1s) to avoid showing stale data if buffer completely missed
+  const isValid = minDiff < 0.25;
+
+  if (!isValid && enabled && bufferData.frames.length > 0) {
+    // console.warn(`[Tracking] Frame miss. Target: ${targetTime.toFixed(2)}, Closest Diff: ${minDiff.toFixed(2)}`);
+  }
+
+  return {
+    data: isValid ? closestFrame : null
+  };
 }
 
 export function useShotPredictions(matchId: number) {
   return useQuery({
     queryKey: ["shotPredictions", matchId],
     queryFn: () => fetchShotPredictions(matchId),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!matchId,
+  });
+}
+
+// Match Status Hook with Polling
+export function useMatchStatus(matchId: number | null, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ["matchStatus", matchId],
+    queryFn: () => fetchMatchStatus(matchId!),
+    enabled: !!matchId && options?.enabled !== false,
+    refetchInterval: (query) => {
+      // Stop polling when completed or failed
+      const status = query.state.data?.status;
+      if (status === "completed" || status === "failed") {
+        return false;
+      }
+      return 3000; // Poll every 3 seconds
+    },
+    staleTime: 0, // Always fetch fresh status
+  });
+}
+
+// Match Events Hook
+export function useMatchEvents(
+  matchId: number,
+  filters?: { type?: string; team?: string }
+) {
+  return useQuery({
+    queryKey: ["matchEvents", matchId, filters],
+    queryFn: () => fetchMatchEvents(matchId, filters),
     staleTime: 5 * 60 * 1000,
     enabled: !!matchId,
   });
@@ -311,67 +546,90 @@ function getMockSummary(matchId: number): MatchSummary {
 }
 
 function getMockTactical(matchId: number): TacticalData {
+  const isMatch1 = matchId === 1;
+
+  const avgPositions: PlayerPosition[] = isMatch1 ? [
+    { playerId: 101, team: "home", x: 0.05, y: 0.50, role: "GK" },
+    { playerId: 102, team: "home", x: 0.22, y: 0.15, role: "LB" },
+    { playerId: 103, team: "home", x: 0.18, y: 0.38, role: "CB" },
+    { playerId: 104, team: "home", x: 0.18, y: 0.62, role: "CB" },
+    { playerId: 105, team: "home", x: 0.22, y: 0.85, role: "RB" },
+    { playerId: 106, team: "home", x: 0.45, y: 0.30, role: "CM" },
+    { playerId: 107, team: "home", x: 0.35, y: 0.50, role: "CDM" },
+    { playerId: 108, team: "home", x: 0.45, y: 0.70, role: "CM" },
+    { playerId: 109, team: "home", x: 0.70, y: 0.18, role: "LW" },
+    { playerId: 110, team: "home", x: 0.80, y: 0.50, role: "ST" },
+    { playerId: 111, team: "home", x: 0.70, y: 0.82, role: "RW" },
+    { playerId: 201, team: "away", x: 0.95, y: 0.50, role: "GK" },
+    { playerId: 202, team: "away", x: 0.78, y: 0.15, role: "LB" },
+    { playerId: 203, team: "away", x: 0.82, y: 0.38, role: "CB" },
+    { playerId: 204, team: "away", x: 0.82, y: 0.62, role: "CB" },
+    { playerId: 205, team: "away", x: 0.78, y: 0.85, role: "RB" },
+    { playerId: 206, team: "away", x: 0.65, y: 0.40, role: "CDM" },
+    { playerId: 207, team: "away", x: 0.65, y: 0.60, role: "CDM" },
+    { playerId: 208, team: "away", x: 0.52, y: 0.15, role: "LM" },
+    { playerId: 209, team: "away", x: 0.48, y: 0.50, role: "CAM" },
+    { playerId: 210, team: "away", x: 0.52, y: 0.85, role: "RM" },
+    { playerId: 211, team: "away", x: 0.25, y: 0.50, role: "ST" }
+  ] : [
+    { playerId: 301, team: "home", x: 0.05, y: 0.50, role: "GK" },
+    { playerId: 302, team: "home", x: 0.22, y: 0.15, role: "LB" },
+    { playerId: 303, team: "home", x: 0.18, y: 0.38, role: "CB" },
+    { playerId: 304, team: "home", x: 0.18, y: 0.62, role: "CB" },
+    { playerId: 305, team: "home", x: 0.22, y: 0.85, role: "RB" },
+    { playerId: 306, team: "home", x: 0.45, y: 0.30, role: "CM" },
+    { playerId: 307, team: "home", x: 0.35, y: 0.50, role: "CDM" },
+    { playerId: 308, team: "home", x: 0.45, y: 0.70, role: "CM" },
+    { playerId: 309, team: "home", x: 0.70, y: 0.18, role: "LW" },
+    { playerId: 310, team: "home", x: 0.80, y: 0.50, role: "ST" },
+    { playerId: 311, team: "home", x: 0.70, y: 0.82, role: "RW" },
+    { playerId: 401, team: "away", x: 0.95, y: 0.50, role: "GK" },
+    { playerId: 402, team: "away", x: 0.78, y: 0.15, role: "LB" },
+    { playerId: 403, team: "away", x: 0.82, "y": 0.38, role: "CB" },
+    { playerId: 404, team: "away", x: 0.82, "y": 0.62, role: "CB" },
+    { playerId: 405, team: "away", x: 0.78, "y": 0.85, role: "RB" },
+    { playerId: 406, team: "away", x: 0.55, "y": 0.30, role: "CM" },
+    { playerId: 407, team: "away", x: 0.65, "y": 0.50, role: "CDM" },
+    { playerId: 408, team: "away", x: 0.55, "y": 0.70, role: "CM" },
+    { playerId: 409, team: "away", x: 0.30, "y": 0.18, role: "LW" },
+    { playerId: 410, team: "away", x: 0.20, "y": 0.50, role: "ST" },
+    { playerId: 411, team: "away", x: 0.30, "y": 0.82, role: "RW" }
+  ];
+
   return {
     matchId,
-    formation: { home: "4-3-3", away: "4-2-3-1" },
-    avgPositions: [
-      { playerId: 1, team: "home", x: 0.1, y: 0.5, role: "GK" },
-      { playerId: 2, team: "home", x: 0.25, y: 0.15, role: "LB" },
-      { playerId: 3, team: "home", x: 0.25, y: 0.38, role: "CB" },
-      { playerId: 4, team: "home", x: 0.25, y: 0.62, role: "CB" },
-      { playerId: 5, team: "home", x: 0.25, y: 0.85, role: "RB" },
-      { playerId: 6, team: "home", x: 0.45, y: 0.3, role: "CM" },
-      { playerId: 7, team: "home", x: 0.45, y: 0.5, role: "CM" },
-      { playerId: 8, team: "home", x: 0.45, y: 0.7, role: "CM" },
-      { playerId: 9, team: "home", x: 0.7, y: 0.2, role: "LW" },
-      { playerId: 10, team: "home", x: 0.75, y: 0.5, role: "ST" },
-      { playerId: 11, team: "home", x: 0.7, y: 0.8, role: "RW" },
-      { playerId: 12, team: "away", x: 0.9, y: 0.5, role: "GK" },
-      { playerId: 13, team: "away", x: 0.75, y: 0.15, role: "LB" },
-      { playerId: 14, team: "away", x: 0.75, y: 0.38, role: "CB" },
-      { playerId: 15, team: "away", x: 0.75, y: 0.62, role: "CB" },
-      { playerId: 16, team: "away", x: 0.75, y: 0.85, role: "RB" },
-      { playerId: 17, team: "away", x: 0.55, y: 0.35, role: "CDM" },
-      { playerId: 18, team: "away", x: 0.55, y: 0.65, role: "CDM" },
-      { playerId: 19, team: "away", x: 0.4, y: 0.2, role: "LW" },
-      { playerId: 20, team: "away", x: 0.35, y: 0.5, role: "CAM" },
-      { playerId: 21, team: "away", x: 0.4, y: 0.8, role: "RW" },
-      { playerId: 22, team: "away", x: 0.25, y: 0.5, role: "ST" },
-    ],
+    formation: { home: "4-3-3", away: isMatch1 ? "4-2-3-1" : "4-3-3" },
+    avgPositions,
     teamHeatmap: {
       gridW: 12,
       gridH: 8,
       home: [
-        [0, 0, 0, 1, 2, 3, 4, 5, 3, 2, 1, 0],
-        [0, 0, 1, 3, 5, 7, 8, 7, 5, 3, 1, 0],
-        [0, 1, 2, 4, 6, 9, 12, 9, 6, 4, 2, 1],
-        [1, 2, 4, 6, 8, 11, 15, 11, 8, 6, 4, 2],
-        [1, 2, 4, 6, 8, 11, 15, 11, 8, 6, 4, 2],
-        [0, 1, 2, 4, 6, 9, 12, 9, 6, 4, 2, 1],
-        [0, 0, 1, 3, 5, 7, 8, 7, 5, 3, 1, 0],
-        [0, 0, 0, 1, 2, 3, 4, 5, 3, 2, 1, 0],
+        [2, 3, 4, 6, 8, 10, 12, 14, 11, 8, 5, 2],
+        [3, 5, 7, 10, 14, 18, 22, 24, 18, 12, 6, 3],
+        [4, 7, 11, 16, 22, 28, 32, 30, 24, 16, 8, 4],
+        [5, 9, 14, 20, 28, 35, 40, 38, 30, 20, 10, 5],
+        [5, 9, 14, 20, 28, 35, 40, 38, 30, 20, 10, 5],
+        [4, 7, 11, 16, 22, 28, 32, 30, 24, 16, 8, 4],
+        [3, 5, 7, 10, 14, 18, 22, 24, 18, 12, 6, 3],
+        [2, 3, 4, 6, 8, 10, 12, 14, 11, 8, 5, 2]
       ],
       away: [
-        [0, 0, 0, 1, 2, 3, 4, 5, 3, 2, 1, 0],
-        [0, 0, 1, 2, 4, 6, 7, 6, 4, 2, 1, 0],
-        [0, 1, 2, 3, 5, 7, 9, 7, 5, 3, 2, 1],
-        [1, 2, 3, 5, 7, 9, 11, 9, 7, 5, 3, 2],
-        [1, 2, 3, 5, 7, 9, 11, 9, 7, 5, 3, 2],
-        [0, 1, 2, 3, 5, 7, 9, 7, 5, 3, 2, 1],
-        [0, 0, 1, 2, 4, 6, 7, 6, 4, 2, 1, 0],
-        [0, 0, 0, 1, 2, 3, 4, 5, 3, 2, 1, 0],
+        [2, 4, 7, 10, 12, 14, 12, 10, 8, 6, 4, 2],
+        [3, 6, 10, 14, 18, 20, 18, 14, 10, 7, 5, 3],
+        [4, 8, 14, 20, 26, 28, 24, 18, 12, 8, 6, 4],
+        [5, 10, 16, 24, 32, 34, 30, 22, 14, 9, 7, 5],
+        [5, 10, 16, 24, 32, 34, 30, 22, 14, 9, 7, 5],
+        [4, 8, 14, 20, 26, 28, 24, 18, 12, 8, 6, 4],
+        [3, 6, 10, 14, 18, 20, 18, 14, 10, 7, 5, 3],
+        [2, 4, 7, 10, 12, 14, 12, 10, 8, 6, 4, 2]
       ],
     },
     possessionTimeline: {
       minutes: [0, 15, 30, 45, 60, 75, 90],
-      home: [55, 58, 62, 60, 57, 56, 58],
-      away: [45, 42, 38, 40, 43, 44, 42],
+      home: [50, 50, 50, 50, 50, 50, 50],
+      away: [50, 50, 50, 50, 50, 50, 50],
     },
-    keyPlayers: [
-      { playerId: 10, name: "Marcus Rashford", team: "home", goals: 1, assists: 1, shots: 5, passAccuracy: 87 },
-      { playerId: 22, name: "Mohamed Salah", team: "away", goals: 1, assists: 0, shots: 4, passAccuracy: 82 },
-      { playerId: 7, name: "Bruno Fernandes", team: "home", goals: 0, assists: 1, shots: 3, passAccuracy: 91 },
-    ],
+    keyPlayers: [],
   };
 }
 
@@ -413,7 +671,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-1",
       matchId,
       team: "home",
-      player: "Marcus Rashford",
+      playerNumber: 10,
       x: 0.88,
       y: 0.48,
       xg: 0.42,
@@ -425,7 +683,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-2",
       matchId,
       team: "away",
-      player: "Mohamed Salah",
+      playerNumber: 11,
       x: 0.85,
       y: 0.52,
       xg: 0.38,
@@ -437,7 +695,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-3",
       matchId,
       team: "home",
-      player: "Bruno Fernandes",
+      playerNumber: 8,
       x: 0.82,
       y: 0.50,
       xg: 0.15,
@@ -449,7 +707,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-4",
       matchId,
       team: "home",
-      player: "Marcus Rashford",
+      playerNumber: 10,
       x: 0.92,
       y: 0.45,
       xg: 0.68,
@@ -461,7 +719,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-5",
       matchId,
       team: "away",
-      player: "Darwin Núñez",
+      playerNumber: 9,
       x: 0.87,
       y: 0.55,
       xg: 0.35,
@@ -473,7 +731,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-6",
       matchId,
       team: "home",
-      player: "Antony",
+      playerNumber: 21,
       x: 0.78,
       y: 0.35,
       xg: 0.08,
@@ -485,7 +743,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-7",
       matchId,
       team: "away",
-      player: "Mohamed Salah",
+      playerNumber: 11,
       x: 0.89,
       y: 0.50,
       xg: 0.55,
@@ -497,7 +755,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-8",
       matchId,
       team: "home",
-      player: "Jadon Sancho",
+      playerNumber: 25,
       x: 0.86,
       y: 0.42,
       xg: 0.28,
@@ -509,7 +767,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-9",
       matchId,
       team: "home",
-      player: "Marcus Rashford",
+      playerNumber: 10,
       x: 0.91,
       y: 0.48,
       xg: 0.62,
@@ -521,7 +779,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-10",
       matchId,
       team: "away",
-      player: "Luis Díaz",
+      playerNumber: 7,
       x: 0.83,
       y: 0.58,
       xg: 0.12,
@@ -533,7 +791,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-11",
       matchId,
       team: "home",
-      player: "Bruno Fernandes",
+      playerNumber: 8,
       x: 0.88,
       y: 0.50,
       xg: 0.45,
@@ -545,7 +803,7 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
       id: "shot-12",
       matchId,
       team: "away",
-      player: "Cody Gakpo",
+      playerNumber: 18,
       x: 0.85,
       y: 0.52,
       xg: 0.32,
@@ -555,4 +813,3 @@ function getMockShotPredictions(matchId: number): ShotPrediction[] {
     },
   ];
 }
-

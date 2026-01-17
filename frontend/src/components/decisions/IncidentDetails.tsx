@@ -66,7 +66,7 @@ export function IncidentDetails() {
               <span className="text-xs">Player</span>
             </div>
             <p className="text-sm font-medium text-foreground truncate">
-              {selectedIncident.player}
+              Player #{selectedIncident.playerNumber}
             </p>
           </div>
 

@@ -8,7 +8,10 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db:migrate": "node database/postgres/migrations/runMigrations.js",
-    "db:seed": "node database/mongodb/seeds/seedData.js"
+    "db:seed": "node database/mongodb/seeds/seedData.js",
+    "db:check": "node scripts/checkDatabases.js",
+    "db:check:mongo": "node scripts/checkMongo.js",
+    "db:check:postgres": "node scripts/checkPostgres.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

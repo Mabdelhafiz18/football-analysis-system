@@ -108,7 +108,7 @@ export function UnifiedTimeline({ incidents, isLoading }: UnifiedTimelineProps) 
                 selectedIncident.type === "offside" ? "bg-primary" : "bg-destructive"
               )} />
               <span className="text-xs font-bold text-foreground truncate max-w-[150px]">
-                {selectedIncident.player}
+                Player #{selectedIncident.playerNumber}
               </span>
               <span className="text-[10px] text-muted-foreground">
                 ({selectedIncident.minute}')
@@ -292,7 +292,7 @@ export function UnifiedTimeline({ incidents, isLoading }: UnifiedTimelineProps) 
                                 </span>
                               </div>
                               <p className="text-sm font-bold text-foreground truncate">
-                                {incident.player}
+                                Player #{incident.playerNumber}
                               </p>
                               <div className="flex items-center justify-between pt-1 border-t border-border/50">
                                 <div className="flex items-center gap-1">
@@ -418,7 +418,7 @@ export function UnifiedTimeline({ incidents, isLoading }: UnifiedTimelineProps) 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-semibold text-foreground truncate">
-                              {incident.player}
+                              Player #{incident.playerNumber}
                             </span>
                             <span className={cn(
                               "text-[9px] font-bold uppercase px-1.5 py-0.5 rounded",

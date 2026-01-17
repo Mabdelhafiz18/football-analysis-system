@@ -7,6 +7,7 @@ import tacticalRouter from './routes/tactical.js';
 import decisionsRouter from './routes/decisions.js';
 import uploadRouter from './routes/upload.js';
 import authRouter from './routes/auth.js';
+import analyticsRouter from './routes/analytics.js';
 import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
@@ -37,6 +38,7 @@ app.use('/tactical', tacticalRouter);
 app.use('/decisions', decisionsRouter);
 app.use('/upload', uploadRouter);
 app.use('/auth', authRouter);
+app.use('/analytics', analyticsRouter);
 
 // Error Handler
 app.use(errorHandler);

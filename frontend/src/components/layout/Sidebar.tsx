@@ -9,12 +9,15 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { UserMenu } from "@/components/auth/UserMenu";
 import { usePermissions } from "@/hooks/usePermissions";
+import { useUpload } from "@/contexts/UploadContext";
+import { Progress } from "@/components/ui/progress";
 
 interface SidebarProps {
   className?: string;
@@ -24,6 +27,7 @@ export function Sidebar({ className }: SidebarProps) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const { canAccessRoute } = usePermissions();
+  const { currentUpload } = useUpload();
 
   const navItems = [
     {
@@ -135,6 +139,39 @@ export function Sidebar({ className }: SidebarProps) {
             );
           })}
         </nav>
+
+        {/* Upload Progress Indicator */}
+        {currentUpload && currentUpload.status !== "completed" && (
+          <Link to="/upload">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-3 mb-2 p-3 rounded-lg bg-primary/10 border border-primary/30 cursor-pointer hover:bg-primary/20 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                {!collapsed && (
+                  <span className="text-xs font-medium text-primary truncate">
+                    {currentUpload.homeTeam} vs {currentUpload.awayTeam}
+                  </span>
+                )}
+              </div>
+              {!collapsed && (
+                <>
+                  <Progress value={currentUpload.progress} className="h-1.5" />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {currentUpload.progress}% - {currentUpload.message || "Processing..."}
+                  </p>
+                </>
+              )}
+              {collapsed && (
+                <div className="text-center text-xs font-bold text-primary">
+                  {currentUpload.progress}%
+                </div>
+              )}
+            </motion.div>
+          </Link>
+        )}
 
         {/* Footer with User Menu */}
         <div className="border-t border-border/50 p-3 space-y-1">

@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS offsides (
+    id SERIAL PRIMARY KEY,
+    match_id INT REFERENCES matches (id) ON DELETE CASCADE,
+    incident_id INT,
+    minute INT,
+    second DECIMAL(5, 2),
+    timestamp DECIMAL(8, 2),
+    frame_number INT,
+    team team_side_enum,
+    player_number INT,
+    player_name VARCHAR(100),
+    position_x DECIMAL(8, 2),
+    position_y DECIMAL(8, 2),
+    decision offside_decision_enum,
+    margin_meters DECIMAL(5, 2),
+    confidence DECIMAL(3, 2),
+    attacker_position_x DECIMAL(8, 2),
+    attacker_position_y DECIMAL(8, 2),
+    defender_position_x DECIMAL(8, 2),
+    defender_position_y DECIMAL(8, 2),
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE (match_id, incident_id)
+);
