@@ -40,22 +40,22 @@ export function StatsOverview({ matches }: StatsOverviewProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
         <motion.div
           key={stat.label}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="glass-card rounded-xl p-4"
+          className="glass-card rounded-xl p-6 min-h-[120px]"
         >
-          <div className="flex items-center gap-3">
-            <div className={cn("p-2 rounded-lg", stat.bgColor)}>
-              <stat.icon className={cn("h-5 w-5", stat.color)} />
+          <div className="flex items-center gap-4">
+            <div className={cn("p-3 rounded-lg", stat.bgColor)}>
+              <stat.icon className={cn("h-7 w-7", stat.color)} />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-              <p className="text-xs text-muted-foreground">{stat.label}</p>
+            <div className="flex-1">
+              <p className="text-4xl font-bold text-foreground mb-1">{stat.value}</p>
+              <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
             </div>
           </div>
         </motion.div>
