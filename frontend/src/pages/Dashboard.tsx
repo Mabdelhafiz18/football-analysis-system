@@ -45,8 +45,8 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Match Dashboard</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-4xl font-bold text-foreground mb-2">Match Dashboard</h1>
+            <p className="text-lg text-muted-foreground">
               Manage and analyze your football matches
             </p>
           </div>
@@ -72,13 +72,13 @@ export default function Dashboard() {
               placeholder="Search teams..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-muted/30"
+              className="pl-9 bg-muted/30 h-12 text-base"
             />
           </div>
 
           {/* Status Filter */}
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-[150px] bg-muted/30">
+            <SelectTrigger className="w-full sm:w-[150px] bg-muted/30 h-12 text-base">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -92,7 +92,7 @@ export default function Dashboard() {
 
           {/* League Filter */}
           <Select value={leagueFilter} onValueChange={setLeagueFilter}>
-            <SelectTrigger className="w-full sm:w-[180px] bg-muted/30">
+            <SelectTrigger className="w-full sm:w-[180px] bg-muted/30 h-12 text-base">
               <SelectValue placeholder="League" />
             </SelectTrigger>
             <SelectContent>
@@ -107,19 +107,19 @@ export default function Dashboard() {
         </div>
 
         {/* Match List */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-2xl font-bold text-foreground">
               Matches ({filteredMatches?.length || 0})
             </h2>
           </div>
 
           {isLoading ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-24 bg-muted/30 rounded-xl animate-pulse"
+                  className="h-32 bg-muted/30 rounded-xl animate-pulse"
                   style={{ animationDelay: `${i * 100}ms` }}
                 />
               ))}
@@ -128,15 +128,15 @@ export default function Dashboard() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="p-8 text-center glass-card rounded-xl"
+              className="p-10 text-center glass-card rounded-xl"
             >
-              <p className="text-destructive">Failed to load matches</p>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-lg font-semibold text-destructive">Failed to load matches</p>
+              <p className="text-base text-muted-foreground mt-2">
                 Please try again later
               </p>
             </motion.div>
           ) : filteredMatches && filteredMatches.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {filteredMatches.map((match, index) => (
                 <MatchCard key={match.id} match={match} index={index} />
               ))}
@@ -145,11 +145,11 @@ export default function Dashboard() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="p-12 text-center glass-card rounded-xl"
+              className="p-16 text-center glass-card rounded-xl"
             >
-              <Filter className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-foreground font-medium">No matches found</p>
-              <p className="text-sm text-muted-foreground mt-1">
+              <Filter className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
+              <p className="text-xl font-bold text-foreground">No matches found</p>
+              <p className="text-base text-muted-foreground mt-2">
                 {searchQuery || statusFilter !== "all" || leagueFilter !== "all"
                   ? "Try adjusting your filters"
                   : "Upload your first match to get started"}

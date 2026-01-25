@@ -53,64 +53,64 @@ export function MatchCard({ match, index }: MatchCardProps) {
       transition={{ delay: index * 0.05 }}
     >
       <Link to={`/match/${match.id}`}>
-        <div className="glass-card rounded-xl p-4 hover:border-primary/50 transition-all duration-200 group cursor-pointer">
-          <div className="flex items-center justify-between gap-4">
+        <div className="glass-card rounded-xl p-6 hover:border-primary/50 transition-all duration-200 group cursor-pointer min-h-[140px]">
+          <div className="flex items-center justify-between gap-6">
             {/* Teams & Score */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 {/* Home Team */}
                 <div className="flex-1 text-right">
-                  <p className="font-semibold text-foreground truncate">{match.homeTeam}</p>
+                  <p className="text-lg font-bold text-foreground truncate">{match.homeTeam}</p>
                 </div>
 
                 {/* Score */}
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/30">
+                <div className="flex items-center gap-2 px-6 py-3 rounded-lg bg-muted/30">
                   {match.homeScore !== undefined && match.awayScore !== undefined ? (
-                    <span className="text-xl font-bold font-mono text-foreground">
+                    <span className="text-2xl font-bold font-mono text-foreground">
                       {match.homeScore} - {match.awayScore}
                     </span>
                   ) : (
-                    <span className="text-sm text-muted-foreground">vs</span>
+                    <span className="text-base font-medium text-muted-foreground">vs</span>
                   )}
                 </div>
 
                 {/* Away Team */}
                 <div className="flex-1 text-left">
-                  <p className="font-semibold text-foreground truncate">{match.awayTeam}</p>
+                  <p className="text-lg font-bold text-foreground truncate">{match.awayTeam}</p>
                 </div>
               </div>
 
               {/* Meta Info */}
-              <div className="flex items-center justify-center gap-4 mt-3 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
-                  <span>{formattedDate}</span>
+              <div className="flex items-center justify-center gap-5 mt-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  <span className="font-medium">{formattedDate}</span>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold text-sm">
                   {match.league}
                 </span>
                 {match.venue && (
-                  <div className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    <span>{match.venue}</span>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    <span className="font-medium">{match.venue}</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Status & Arrow */}
-            <div className="flex items-center gap-3">
-              <div className={cn("flex items-center gap-1.5 px-2.5 py-1 rounded-full", status.bgColor)}>
+            <div className="flex items-center gap-4">
+              <div className={cn("flex items-center gap-2 px-3 py-2 rounded-full", status.bgColor)}>
                 <StatusIcon
                   className={cn(
-                    "h-3.5 w-3.5",
+                    "h-5 w-5",
                     status.color,
                     status.animate && "animate-spin"
                   )}
                 />
-                <span className={cn("text-xs font-medium", status.color)}>{status.label}</span>
+                <span className={cn("text-sm font-semibold", status.color)}>{status.label}</span>
               </div>
-              <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+              <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
             </div>
           </div>
         </div>

@@ -50,11 +50,13 @@ export default function Register() {
         name: formData.name,
         clubName: formData.clubName,
         role: formData.role,
+        password: formData.password,
       });
       toast.success("Account created successfully!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error("Registration failed. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "Registration failed. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
