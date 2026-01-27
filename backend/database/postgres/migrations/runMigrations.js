@@ -20,6 +20,7 @@ const runMigrations = async () => {
       'Type.sql',
       'matches.sql',
       'users.sql',
+      'processing_jobs.sql',
       'offsides.sql',
       'fouls.sql',
       'shots.sql',

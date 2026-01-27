@@ -85,7 +85,7 @@ export function Sidebar({ className }: SidebarProps) {
                 exit={{ opacity: 0 }}
                 className="text-lg font-bold text-foreground"
               >
-                Vision<span className="text-primary">VAR</span>
+                Kora<span className="text-primary">Vision</span>
               </motion.span>
             )}
           </Link>

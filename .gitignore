@@ -5,10 +5,13 @@ __pycache__/
 node_modules/
 dist/
 .env
+ai_models/
+
 
 uploads/*
 !uploads/.gitkeep
 results/*
 !results/.gitkeep
 frames/*
-!frames/.gitkeep
+!frames/.gitkeep 
+

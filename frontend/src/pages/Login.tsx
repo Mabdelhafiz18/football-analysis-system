@@ -49,7 +49,7 @@ export default function Login() {
               <Video className="h-6 w-6 text-primary-foreground" />
             </div>
             <span className="text-2xl font-bold text-foreground">
-              Vision<span className="text-primary">VAR</span>
+              Kora<span className="text-primary">Vision</span>
             </span>
           </Link>
           <h1 className="text-2xl font-bold text-foreground">Sign in to your account</h1>

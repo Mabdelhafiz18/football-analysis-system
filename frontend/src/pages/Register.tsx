@@ -85,11 +85,11 @@ export default function Register() {
               <Video className="h-6 w-6 text-primary-foreground" />
             </div>
             <span className="text-2xl font-bold text-foreground">
-              Vision<span className="text-primary">VAR</span>
+              Kora<span className="text-primary">Vision</span>
             </span>
           </Link>
           <h1 className="text-2xl font-bold text-foreground">Create your account</h1>
-          <p className="text-muted-foreground mt-2">Join VisionVAR and revolutionize your analysis</p>
+          <p className="text-muted-foreground mt-2">Join KoraVision and revolutionize your analysis</p>
         </div>
 
         <div className="glass-card rounded-2xl p-8 border-border/50">
