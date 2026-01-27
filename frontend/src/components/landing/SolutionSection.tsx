@@ -68,7 +68,7 @@ export const SolutionSection = () => {
             The Solution
           </span>
           <h2 className="mb-6 text-3xl font-bold text-foreground md:text-5xl">
-            VisionVAR Intelligence
+            KoraVision Intelligence
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground">
             Four powerful AI models working in harmony to deliver professional-grade analysis.

@@ -50,11 +50,15 @@ class DatabaseService {
    * @param {number|string} matchId 
    */
   async generateSummaryFromEvents(matchId) {
-    const [offsides, fouls, shots, matches, tactical] = await Promise.all([
-      this._readJsonFile(`match_${matchId}_offsides.json`),
-      this._readJsonFile(`match_${matchId}_fouls.json`),
-      this._readJsonFile(`match_${matchId}_shots.json`),
-      this._readJsonFile('matches.json'),
+    // Get events from database or JSON
+    const events = await this.getMatchEvents(matchId);
+    const offsides = events.offsides;
+    const fouls = events.fouls;
+    const shots = events.shots;
+
+    // Get matches list and tactical data
+    const [matches, tactical] = await Promise.all([
+      this.getMatches(),
       this._readJsonFile(`match_${matchId}_tactical.json`)
     ]);
 
@@ -175,11 +179,37 @@ class DatabaseService {
    * @param {Object} filters - { type: 'offside'|'foul'|'shot', team: 'home'|'away' }
    */
   async getMatchEvents(matchId, filters = {}) {
-    const [offsides, fouls, shots] = await Promise.all([
-      this._readJsonFile(`match_${matchId}_offsides.json`),
-      this._readJsonFile(`match_${matchId}_fouls.json`),
-      this._readJsonFile(`match_${matchId}_shots.json`)
-    ]);
+    let offsides = null;
+    let fouls = null;
+    let shots = null;
+
+    // Try PostgreSQL first
+    if (this.usePostgres) {
+      try {
+        const [offsidesResult, foulsResult, shotsResult] = await Promise.all([
+          this._getOffsidesFromDb(matchId),
+          this._getFoulsFromDb(matchId),
+          this._getShotsFromDb(matchId)
+        ]);
+
+        if (offsidesResult.length > 0 || foulsResult.length > 0 || shotsResult.length > 0) {
+          offsides = offsidesResult;
+          fouls = foulsResult;
+          shots = shotsResult;
+        }
+      } catch (err) {
+        console.warn('PostgreSQL error fetching events, falling back to JSON:', err.message);
+      }
+    }
+
+    // Fallback to JSON files
+    if (offsides === null) {
+      [offsides, fouls, shots] = await Promise.all([
+        this._readJsonFile(`match_${matchId}_offsides.json`),
+        this._readJsonFile(`match_${matchId}_fouls.json`),
+        this._readJsonFile(`match_${matchId}_shots.json`)
+      ]);
+    }
 
     let result = {
       offsides: offsides || [],
@@ -208,6 +238,128 @@ class DatabaseService {
     }
 
     return result;
+  }
+
+  /**
+   * Get offsides from PostgreSQL
+   * @param {number|string} matchId
+   * @returns {Promise<Array>}
+   */
+  async _getOffsidesFromDb(matchId) {
+    const result = await postgresPool.query(
+      `SELECT 
+        incident_id, minute, second, timestamp, frame_number,
+        team, player_number, player_name,
+        position_x, position_y, decision, margin_meters, confidence,
+        attacker_position_x, attacker_position_y,
+        defender_position_x, defender_position_y
+      FROM offsides 
+      WHERE match_id = $1 
+      ORDER BY timestamp`,
+      [matchId]
+    );
+
+    return result.rows.map(row => ({
+      incident_id: row.incident_id,
+      minute: row.minute,
+      second: parseFloat(row.second),
+      timestamp: parseFloat(row.timestamp),
+      frame_number: row.frame_number,
+      team: row.team,
+      player_number: row.player_number,
+      player_name: row.player_name,
+      position_x: parseFloat(row.position_x),
+      position_y: parseFloat(row.position_y),
+      decision: row.decision,
+      margin_meters: parseFloat(row.margin_meters),
+      confidence: parseFloat(row.confidence),
+      attacker_position: {
+        x: parseFloat(row.attacker_position_x),
+        y: parseFloat(row.attacker_position_y)
+      },
+      defender_position: {
+        x: parseFloat(row.defender_position_x),
+        y: parseFloat(row.defender_position_y)
+      }
+    }));
+  }
+
+  /**
+   * Get fouls from PostgreSQL
+   * @param {number|string} matchId
+   * @returns {Promise<Array>}
+   */
+  async _getFoulsFromDb(matchId) {
+    const result = await postgresPool.query(
+      `SELECT 
+        foul_id, minute, second, timestamp, frame_number,
+        team, player_number, player_name,
+        position_x, position_y, foul_type, severity, card_type, confidence,
+        contact_point_x, contact_point_y
+      FROM fouls 
+      WHERE match_id = $1 
+      ORDER BY timestamp`,
+      [matchId]
+    );
+
+    return result.rows.map(row => ({
+      foul_id: row.foul_id,
+      minute: row.minute,
+      second: parseFloat(row.second),
+      timestamp: parseFloat(row.timestamp),
+      frame_number: row.frame_number,
+      team: row.team,
+      player_number: row.player_number,
+      player_name: row.player_name,
+      position_x: parseFloat(row.position_x),
+      position_y: parseFloat(row.position_y),
+      foul_type: row.foul_type,
+      severity: row.severity,
+      card_type: row.card_type,
+      confidence: parseFloat(row.confidence),
+      contact_point: {
+        x: parseFloat(row.contact_point_x),
+        y: parseFloat(row.contact_point_y)
+      }
+    }));
+  }
+
+  /**
+   * Get shots from PostgreSQL
+   * @param {number|string} matchId
+   * @returns {Promise<Array>}
+   */
+  async _getShotsFromDb(matchId) {
+    const result = await postgresPool.query(
+      `SELECT 
+        shot_id, minute, second, timestamp, frame_number,
+        team, player_number, player_name,
+        x, y, target_x, target_y,
+        is_goal, is_on_target, goal_probability, xg
+      FROM shots 
+      WHERE match_id = $1 
+      ORDER BY timestamp`,
+      [matchId]
+    );
+
+    return result.rows.map(row => ({
+      shot_id: row.shot_id,
+      minute: row.minute,
+      second: parseFloat(row.second),
+      timestamp: parseFloat(row.timestamp),
+      frame_number: row.frame_number,
+      team: row.team,
+      player_number: row.player_number,
+      player_name: row.player_name,
+      position_x: parseFloat(row.x),
+      position_y: parseFloat(row.y),
+      target_x: row.target_x ? parseFloat(row.target_x) : null,
+      target_y: row.target_y ? parseFloat(row.target_y) : null,
+      is_goal: row.is_goal,
+      is_on_target: row.is_on_target,
+      goal_probability: row.goal_probability ? parseFloat(row.goal_probability) : null,
+      xg: row.xg ? parseFloat(row.xg) : null
+    }));
   }
 
   /**

@@ -28,7 +28,7 @@ const addBranding = (doc: jsPDF, title: string) => {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(24);
   doc.setFont("helvetica", "bold");
-  doc.text("VisionVAR", 20, 25);
+  doc.text("KoraVision", 20, 25);
   
   doc.setFontSize(14);
   doc.setFont("helvetica", "normal");
@@ -39,7 +39,7 @@ const addBranding = (doc: jsPDF, title: string) => {
   doc.setFontSize(10);
   doc.setTextColor(150, 150, 150);
   const date = new Date().toLocaleDateString();
-  doc.text(`Generated on ${date} • VisionVAR Professional Analysis`, 20, pageHeight - 10);
+  doc.text(`Generated on ${date} • KoraVision Professional Analysis`, 20, pageHeight - 10);
   doc.text(`Page ${doc.internal.getCurrentPageInfo().pageNumber}`, pageWidth - 20, pageHeight - 10, { align: "right" });
 };
 

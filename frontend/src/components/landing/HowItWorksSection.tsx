@@ -15,7 +15,7 @@ const steps = [
     icon: Cloud,
     title: "Analyze",
     description:
-      "Upload to the VisionVAR cloud; our 4 AI models process the footage frame-by-frame.",
+      "Upload to the KoraVision cloud; our 4 AI models process the footage frame-by-frame.",
   },
   {
     number: "03",

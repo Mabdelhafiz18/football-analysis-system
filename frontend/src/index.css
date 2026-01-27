@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* VisionVAR Design System - Obsidian Glassmorphism
+/* KoraVision Design System - Obsidian Glassmorphism
    All colors MUST be HSL.
 */
 
@@ -42,7 +42,7 @@
 
     --radius: 0.75rem;
 
-    /* Custom VisionVAR tokens */
+    /* Custom KoraVision tokens */
     --glass: 0 0% 8%;
     --glass-border: 0 0% 20%;
     --lime-glow: 82 84% 67%;
@@ -81,7 +81,7 @@
     --input: 220 10% 92%;
     --ring: 82 84% 45%;
 
-    /* Custom VisionVAR tokens - Light */
+    /* Custom KoraVision tokens - Light */
     --glass: 220 20% 96%;
     --glass-border: 220 10% 80%;
     --lime-glow: 82 84% 45%;
@@ -111,7 +111,7 @@
     --input: 0 0% 15%;
     --ring: 82 84% 67%;
 
-    /* Custom VisionVAR tokens - Dark */
+    /* Custom KoraVision tokens - Dark */
     --glass: 0 0% 8%;
     --glass-border: 0 0% 20%;
     --lime-glow: 82 84% 67%;

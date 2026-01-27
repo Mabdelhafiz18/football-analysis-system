@@ -1,4 +1,4 @@
-# Vision Pitch AI
+# KoraVision
 
 A comprehensive football analysis platform using AI to provide tactical insights, referee decision support (Offside/Foul detection), and match statistics.
 

@@ -1,26 +1,22 @@
 import express from 'express';
 import multer from 'multer';
-import { uploadVideo } from '../controllers/uploadController.js';
-import config from '../config/config.js';
+import { uploadVideo, getUploadStatus } from '../controllers/uploadController.js';
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, config.paths.uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
-  }
-});
+// Use memory storage to allow streaming to Azure or saving locally
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
   storage,
-  limits: { fileSize: 500 * 1024 * 1024 } 
+  limits: { fileSize: 500 * 1024 * 1024 } // 500MB limit
 });
 
 const router = express.Router();
 
+// Upload video endpoint
 router.post('/upload-video', upload.single('video'), uploadVideo);
+
+// Upload service status endpoint
+router.get('/status', getUploadStatus);
 
 export default router;
 

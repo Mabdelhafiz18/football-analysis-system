@@ -19,7 +19,7 @@ export const Navigation = () => {
           <Link to="/">
             <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.02 }}>
               <span className="text-xl font-bold text-foreground">
-                Vision<span className="text-primary">VAR</span>
+                Kora<span className="text-primary">Vision</span>
               </span>
             </motion.div>
           </Link>

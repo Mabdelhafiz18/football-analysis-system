@@ -21,7 +21,7 @@ export const Footer = () => {
           }} className="mb-6 flex items-center gap-2">
 
             <span className="text-xl font-bold text-foreground">
-              Vision<span className="text-primary">VAR</span>
+              Kora<span className="text-primary">Vision</span>
             </span>
           </motion.div>
 
@@ -64,7 +64,7 @@ export const Footer = () => {
       {/* Bottom bar */}
       <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
         <p className="text-sm text-muted-foreground">
-          © 2024 VisionVAR. All rights reserved.
+          © 2024 KoraVision. All rights reserved.
         </p>
 
       </div>

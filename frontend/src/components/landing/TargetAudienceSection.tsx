@@ -41,7 +41,7 @@ export const TargetAudienceSection = () => {
         </h2>
         <p className="mx-auto max-w-2xl text-muted-foreground">
           Whether you're developing the next generation of stars or competing
-          in your local league, VisionVAR empowers you to play smarter.
+          in your local league, KoraVision empowers you to play smarter.
         </p>
       </motion.div>
 

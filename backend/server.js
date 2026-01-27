@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import config from './config/config.js';
 import connectMongoDB from './database/mongodb/connection.js';
+import jobService from './services/jobService.js';
 import matchesRouter from './routes/matches.js';
 import tacticalRouter from './routes/tactical.js';
 import decisionsRouter from './routes/decisions.js';
@@ -17,9 +18,14 @@ if (config.db.mongodb.enabled) {
   connectMongoDB();
 }
 
+// Initialize job service (load persisted jobs from database)
+jobService.initialize().catch(err => {
+  console.warn('Job service initialization warning:', err.message);
+});
+
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:8080'],
   credentials: true
 }));
 app.use(express.json());
@@ -44,7 +50,7 @@ app.use('/analytics', analyticsRouter);
 app.use(errorHandler);
 
 const PORT = config.port;
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
   console.log(`🚀 Server running in ${config.env} mode on port ${PORT}`);
 });
 

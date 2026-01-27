@@ -25,7 +25,14 @@ export const config = {
   },
   ai: {
     url: process.env.AI_SERVICE_URL || 'http://localhost:5000',
-    pollingInterval: parseInt(process.env.AI_POLLING_INTERVAL, 10) || 5000
+    pollingInterval: parseInt(process.env.AI_POLLING_INTERVAL, 10) || 5000,
+    processingTimeout: parseInt(process.env.AI_PROCESSING_TIMEOUT, 10) || 1800000, // 30 minutes
+    maxRetries: parseInt(process.env.AI_MAX_RETRIES, 10) || 3
+  },
+  azure: {
+    connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
+    containerName: process.env.AZURE_STORAGE_CONTAINER_NAME || 'videos',
+    enabled: process.env.USE_AZURE_STORAGE === 'true'
   }
 };
 
