@@ -382,7 +382,6 @@ npm run build
 
 ## 📚 API Documentation
 
-Full API documentation is available in [API_CONTRACT.md](./API_CONTRACT.md).
 
 ### Key Endpoints
 
