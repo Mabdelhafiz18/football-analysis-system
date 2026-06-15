@@ -1,0 +1,160 @@
+[
+  {
+    "event_type": "xg_shot",
+    "schema_version": "xg.v1",
+    "shot_id": 1,
+    "job_id": "match_001",
+    "frame_id": 1650,
+    "timestamp_sec": 65.96,
+    "shooter_id": 142,
+    "team_id": 1,
+    "attacking_direction": "-x",
+    "xg": 0.0517,
+    "quality": "Low Quality Chance",
+    "trained_features": {
+      "distance_to_goal": 30.893,
+      "angle_to_goal": 13.174,
+      "shot_x": 30.09,
+      "shot_y": 28.0,
+      "body_part": "unknown",
+      "shot_type": "open_play",
+      "play_pattern": "open_play",
+      "is_penalty": 0,
+      "is_free_kick": 0,
+      "is_header": 0,
+      "is_foot": 0,
+      "is_first_time": 0,
+      "under_pressure": 0,
+      "is_one_on_one": 0,
+      "is_open_goal": 0,
+      "is_set_piece": 0
+    },
+    "vision_diagnostic_features": {
+      "goalkeeper_distance": null,
+      "goalkeeper_lateral_offset": null,
+      "nearest_defender_distance": 6.12,
+      "num_defenders_2m": 0,
+      "num_defenders_5m": 0,
+      "num_defenders_10m": 1,
+      "defenders_in_cone": 0,
+      "nearest_defender_in_cone": null,
+      "goal_visible_ratio": 1.0,
+      "attackers_box": 0,
+      "defenders_box": 0,
+      "local_density": 1,
+      "ball_speed_before_shot": 8.912
+    },
+    "explanation": {
+      "summary": "Low quality chance, shot ~31m from goal, angle ~13°, visible goal ~100%. Predicted xG 0.05.",
+      "top_positive_factors": [],
+      "top_negative_factors": [
+        {
+          "feature": "distance_to_goal",
+          "value": 30.893,
+          "effect": "directional",
+          "source": "trained_model",
+          "reason": "The shot was far from goal, which strongly reduces scoring probability."
+        },
+        {
+          "feature": "angle_to_goal",
+          "value": 13.174,
+          "effect": "directional",
+          "source": "trained_model",
+          "reason": "The shot had a narrow angle to goal, reducing the available target."
+        },
+        {
+          "feature": "nearest_defender_distance",
+          "value": 6.12,
+          "effect": "diagnostic",
+          "source": "vision_diagnostic",
+          "reason": "A nearby defender increases pressure. This is diagnostic unless the model was trained with freeze-frame features."
+        }
+      ]
+    },
+    "debug": {
+      "homography_age_frames": 1,
+      "ball_gap_frames": 0,
+      "shot_detection_reason": "ball_speed_and_release",
+      "model_version": "xg_xgboost_v1"
+    }
+  },
+  {
+    "event_type": "xg_shot",
+    "schema_version": "xg.v1",
+    "shot_id": 2,
+    "job_id": "match_001",
+    "frame_id": 3524,
+    "timestamp_sec": 140.92,
+    "shooter_id": 85,
+    "team_id": 0,
+    "attacking_direction": "+x",
+    "xg": 0.0859,
+    "quality": "Low Quality Chance",
+    "trained_features": {
+      "distance_to_goal": 37.708,
+      "angle_to_goal": 8.081,
+      "shot_x": 92.68,
+      "shot_y": 9.01,
+      "body_part": "unknown",
+      "shot_type": "open_play",
+      "play_pattern": "open_play",
+      "is_penalty": 0,
+      "is_free_kick": 0,
+      "is_header": 0,
+      "is_foot": 0,
+      "is_first_time": 0,
+      "under_pressure": 0,
+      "is_one_on_one": 0,
+      "is_open_goal": 0,
+      "is_set_piece": 0
+    },
+    "vision_diagnostic_features": {
+      "goalkeeper_distance": 24.439,
+      "goalkeeper_lateral_offset": 3.19,
+      "nearest_defender_distance": 11.763,
+      "num_defenders_2m": 0,
+      "num_defenders_5m": 0,
+      "num_defenders_10m": 0,
+      "defenders_in_cone": 0,
+      "nearest_defender_in_cone": null,
+      "goal_visible_ratio": 1.0,
+      "attackers_box": 0,
+      "defenders_box": 0,
+      "local_density": 1,
+      "ball_speed_before_shot": 10.951
+    },
+    "explanation": {
+      "summary": "Low quality chance, shot ~38m from goal, angle ~8°, visible goal ~100%. Predicted xG 0.09.",
+      "top_positive_factors": [],
+      "top_negative_factors": [
+        {
+          "feature": "distance_to_goal",
+          "value": 37.708,
+          "effect": "directional",
+          "source": "trained_model",
+          "reason": "The shot was far from goal, which strongly reduces scoring probability."
+        },
+        {
+          "feature": "angle_to_goal",
+          "value": 8.081,
+          "effect": "directional",
+          "source": "trained_model",
+          "reason": "The shot had a narrow angle to goal, reducing the available target."
+        },
+        {
+          "feature": "goalkeeper_distance",
+          "value": 24.439,
+          "effect": "diagnostic",
+          "source": "vision_diagnostic",
+          "reason": "Keeper proximity/positioning affects the open target. This is diagnostic unless the model was trained with freeze-frame features."
+        }
+      ]
+    },
+    "debug": {
+      "homography_age_frames": 37,
+      "ball_gap_frames": 0,
+      "shot_detection_reason": "ball_speed_and_release",
+      "model_version": "xg_xgboost_v1"
+    }
+  }
+]
