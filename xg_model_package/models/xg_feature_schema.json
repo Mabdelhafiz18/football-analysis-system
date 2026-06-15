@@ -1,0 +1,211 @@
+{
+  "schema_version": "xg_feature_schema.v1",
+  "pitch_training": "StatsBomb 120x80",
+  "pitch_inference": "Vision 120x70 meters",
+  "trained_model_features": [
+    {
+      "name": "distance_to_goal",
+      "type": "numeric",
+      "description": "Distance from shot location to goal center (m)."
+    },
+    {
+      "name": "angle_to_goal",
+      "type": "numeric",
+      "description": "Angle subtended by goal mouth from shot point (deg)."
+    },
+    {
+      "name": "shot_x",
+      "type": "numeric",
+      "description": "Shot x-coordinate on 120m pitch."
+    },
+    {
+      "name": "shot_y",
+      "type": "numeric",
+      "description": "Shot y-coordinate on 70m pitch."
+    },
+    {
+      "name": "body_part",
+      "type": "categorical",
+      "description": "body_part category."
+    },
+    {
+      "name": "shot_type",
+      "type": "categorical",
+      "description": "shot_type category."
+    },
+    {
+      "name": "play_pattern",
+      "type": "categorical",
+      "description": "play_pattern category."
+    },
+    {
+      "name": "is_penalty",
+      "type": "binary_flag",
+      "description": "is_penalty flag."
+    },
+    {
+      "name": "is_free_kick",
+      "type": "binary_flag",
+      "description": "is_free_kick flag."
+    },
+    {
+      "name": "is_header",
+      "type": "binary_flag",
+      "description": "is_header flag."
+    },
+    {
+      "name": "is_foot",
+      "type": "binary_flag",
+      "description": "is_foot flag."
+    },
+    {
+      "name": "is_first_time",
+      "type": "binary_flag",
+      "description": "is_first_time flag."
+    },
+    {
+      "name": "under_pressure",
+      "type": "binary_flag",
+      "description": "under_pressure flag."
+    },
+    {
+      "name": "is_one_on_one",
+      "type": "binary_flag",
+      "description": "is_one_on_one flag."
+    },
+    {
+      "name": "is_open_goal",
+      "type": "binary_flag",
+      "description": "is_open_goal flag."
+    },
+    {
+      "name": "is_set_piece",
+      "type": "binary_flag",
+      "description": "is_set_piece flag."
+    }
+  ],
+  "categorical_features": [
+    "body_part",
+    "shot_type",
+    "play_pattern"
+  ],
+  "numeric_features": [
+    "distance_to_goal",
+    "angle_to_goal",
+    "shot_x",
+    "shot_y",
+    "is_penalty",
+    "is_free_kick",
+    "is_header",
+    "is_foot",
+    "is_first_time",
+    "under_pressure",
+    "is_one_on_one",
+    "is_open_goal",
+    "is_set_piece"
+  ],
+  "vision_diagnostic_features": [
+    {
+      "name": "goalkeeper_distance",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "goalkeeper_lateral_offset",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "nearest_defender_distance",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "num_defenders_2m",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "num_defenders_5m",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "num_defenders_10m",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "defenders_in_cone",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "nearest_defender_in_cone",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "goal_visible_ratio",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "attackers_box",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "defenders_box",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "local_density",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    },
+    {
+      "name": "ball_speed_before_shot",
+      "type": "numeric",
+      "description": "Vision-only scene feature; diagnostic unless model trained with it."
+    }
+  ],
+  "quality_thresholds": {
+    "low": 0.05,
+    "medium": 0.15,
+    "high": 0.35
+  },
+  "encoded_feature_columns": [
+    "distance_to_goal",
+    "angle_to_goal",
+    "shot_x",
+    "shot_y",
+    "is_penalty",
+    "is_free_kick",
+    "is_header",
+    "is_foot",
+    "is_first_time",
+    "under_pressure",
+    "is_one_on_one",
+    "is_open_goal",
+    "is_set_piece",
+    "body_part_head",
+    "body_part_left_foot",
+    "body_part_other",
+    "body_part_right_foot",
+    "shot_type_corner",
+    "shot_type_free_kick",
+    "shot_type_open_play",
+    "shot_type_penalty",
+    "play_pattern_from_corner",
+    "play_pattern_from_counter",
+    "play_pattern_from_free_kick",
+    "play_pattern_from_goal_kick",
+    "play_pattern_from_keeper",
+    "play_pattern_from_kick_off",
+    "play_pattern_from_throw_in",
+    "play_pattern_other",
+    "play_pattern_regular_play"
+  ]
+}

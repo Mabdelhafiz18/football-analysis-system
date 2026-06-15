@@ -1,0 +1,9 @@
+{
+  "base_url": "https://raw.githubusercontent.com/statsbomb/open-data/master/data",
+  "competition_seasons": 8,
+  "matches_processed": 64,
+  "shots_written": 1494,
+  "matches_with_360": 0,
+  "use_360": false,
+  "shots_path": "data/raw/shots.jsonl"
+}

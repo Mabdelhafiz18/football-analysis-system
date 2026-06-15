@@ -1,0 +1,180 @@
+{
+  "model_type": "XGBoostClassifier",
+  "dataset_source": "StatsBomb Open Data",
+  "num_shots": 1494,
+  "num_goals": 195,
+  "num_non_goals": 1299,
+  "train_size": 1195,
+  "test_size": 299,
+  "scale_pos_weight": 6.66,
+  "metrics": {
+    "roc_auc": 0.7843688362919131,
+    "log_loss": 0.5344316210636786,
+    "brier_score": 0.09261961166701829,
+    "accuracy": 0.8896321070234113,
+    "precision": 0.6875,
+    "recall": 0.28205128205128205
+  },
+  "confusion_matrix": [
+    [
+      255,
+      5
+    ],
+    [
+      28,
+      11
+    ]
+  ],
+  "feature_importance": [
+    {
+      "feature": "is_header",
+      "importance": 0.11212810128927231
+    },
+    {
+      "feature": "is_penalty",
+      "importance": 0.09515334665775299
+    },
+    {
+      "feature": "angle_to_goal",
+      "importance": 0.06098686903715134
+    },
+    {
+      "feature": "is_free_kick",
+      "importance": 0.05801009759306908
+    },
+    {
+      "feature": "shot_type_free_kick",
+      "importance": 0.050196386873722076
+    },
+    {
+      "feature": "play_pattern_from_corner",
+      "importance": 0.04894053936004639
+    },
+    {
+      "feature": "is_foot",
+      "importance": 0.04448462277650833
+    },
+    {
+      "feature": "is_open_goal",
+      "importance": 0.04376840963959694
+    },
+    {
+      "feature": "body_part_left_foot",
+      "importance": 0.0407416932284832
+    },
+    {
+      "feature": "under_pressure",
+      "importance": 0.04040618613362312
+    },
+    {
+      "feature": "play_pattern_from_counter",
+      "importance": 0.0357711985707283
+    },
+    {
+      "feature": "shot_x",
+      "importance": 0.03492948040366173
+    },
+    {
+      "feature": "distance_to_goal",
+      "importance": 0.032163940370082855
+    },
+    {
+      "feature": "shot_y",
+      "importance": 0.0311411265283823
+    },
+    {
+      "feature": "play_pattern_from_goal_kick",
+      "importance": 0.0311256255954504
+    },
+    {
+      "feature": "shot_type_open_play",
+      "importance": 0.03057231567800045
+    },
+    {
+      "feature": "is_set_piece",
+      "importance": 0.030251072719693184
+    },
+    {
+      "feature": "is_first_time",
+      "importance": 0.02901742234826088
+    },
+    {
+      "feature": "play_pattern_regular_play",
+      "importance": 0.027891267091035843
+    },
+    {
+      "feature": "play_pattern_from_free_kick",
+      "importance": 0.027249721810221672
+    },
+    {
+      "feature": "play_pattern_from_throw_in",
+      "importance": 0.026244593784213066
+    },
+    {
+      "feature": "is_one_on_one",
+      "importance": 0.024505525827407837
+    },
+    {
+      "feature": "body_part_right_foot",
+      "importance": 0.0242921132594347
+    },
+    {
+      "feature": "play_pattern_other",
+      "importance": 0.020028313621878624
+    },
+    {
+      "feature": "body_part_head",
+      "importance": 0.0
+    },
+    {
+      "feature": "body_part_other",
+      "importance": 0.0
+    },
+    {
+      "feature": "shot_type_corner",
+      "importance": 0.0
+    },
+    {
+      "feature": "shot_type_penalty",
+      "importance": 0.0
+    },
+    {
+      "feature": "play_pattern_from_keeper",
+      "importance": 0.0
+    },
+    {
+      "feature": "play_pattern_from_kick_off",
+      "importance": 0.0
+    }
+  ],
+  "calibration": [
+    {
+      "mean_predicted": 0.019005848094820976,
+      "fraction_positive": 0.018518518518518517
+    },
+    {
+      "mean_predicted": 0.030172787234187128,
+      "fraction_positive": 0.04
+    },
+    {
+      "mean_predicted": 0.08550464566797018,
+      "fraction_positive": 0.08571428571428572
+    },
+    {
+      "mean_predicted": 0.19230769574642181,
+      "fraction_positive": 0.08333333333333333
+    },
+    {
+      "mean_predicted": 0.19975888941969192,
+      "fraction_positive": 0.2571428571428571
+    },
+    {
+      "mean_predicted": 0.6672984333265395,
+      "fraction_positive": 0.6666666666666666
+    }
+  ],
+  "limitations": [
+    "Model trained on StatsBomb event features only; Vision diagnostic features (pressure, GK distance) are NOT inputs and remain diagnostic.",
+    "body_part/shot_type from Vision are usually 'unknown'/'open_play', which shifts inference toward open-play priors."
+  ]
+}
