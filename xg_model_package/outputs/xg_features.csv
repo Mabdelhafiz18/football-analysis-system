@@ -1,0 +1,3 @@
+shot_id,timestamp_sec,team_id,xg,quality,distance_to_goal,angle_to_goal,shot_x,shot_y,body_part,shot_type,play_pattern,is_penalty,is_free_kick,is_header,is_foot,is_first_time,under_pressure,is_one_on_one,is_open_goal,is_set_piece,goalkeeper_distance,goalkeeper_lateral_offset,nearest_defender_distance,num_defenders_2m,num_defenders_5m,num_defenders_10m,defenders_in_cone,nearest_defender_in_cone,goal_visible_ratio,attackers_box,defenders_box,local_density,ball_speed_before_shot
+1,65.96,1,0.0517,Low Quality Chance,30.893,13.174,30.09,28.0,unknown,open_play,open_play,0,0,0,0,0,0,0,0,0,,,6.12,0,0,1,0,,1.0,0,0,1,8.912
+2,140.92,0,0.0859,Low Quality Chance,37.708,8.081,92.68,9.01,unknown,open_play,open_play,0,0,0,0,0,0,0,0,0,24.439,3.19,11.763,0,0,0,0,,1.0,0,0,1,10.951
