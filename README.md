@@ -10,7 +10,7 @@
 
 Bring the power of Premier League technology to local clubs, academies, and private pitches. No expensive hardware—just pure AI intelligence.
 
-[Features](#-features) • [Getting Started](#-getting-started) • [Architecture](#-architecture) • [API Docs](./API_CONTRACT.md)
+[Features](#-features) • [Getting Started](#-getting-started) • [Architecture](#-architecture) • [AI Services](#-ai-services-deployment) • [API Docs](./API_CONTRACT.md)
 
 </div>
 
@@ -21,6 +21,7 @@ Bring the power of Premier League technology to local clubs, academies, and priv
 - [Overview](#-overview)
 - [Features](#-features)
 - [Architecture](#-architecture)
+- [AI Services Deployment](#-ai-services-deployment)
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
@@ -30,6 +31,8 @@ Bring the power of Premier League technology to local clubs, academies, and priv
 - [API Documentation](#-api-documentation)
 - [Contributing](#-contributing)
 - [License](#-license)
+
+---
 
 ## 🎯 Overview
 
@@ -43,6 +46,8 @@ Bring the power of Premier League technology to local clubs, academies, and priv
 - **📈 Advanced Metrics**: xG (Expected Goals), shot analysis, and performance statistics
 - **☁️ Cloud-Powered**: No expensive hardware required—just upload and analyze
 - **🔒 Enterprise-Ready**: Role-based access control, secure storage, and audit logs
+
+---
 
 ## ✨ Features
 
@@ -66,21 +71,215 @@ Bring the power of Premier League technology to local clubs, academies, and priv
 - 🔐 **Authentication**: JWT-based auth with role management (Admin, Coach, Analyst)
 - 🌐 **RESTful API**: Comprehensive API for third-party integrations
 
+---
+
 ## 🏗 Architecture
 
+
 ```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│   Frontend  │─────▶│   Backend   │─────▶│ AI Service  │
-│  (React)    │      │  (Node.js)  │      │  (Python)   │
-└─────────────┘      └─────────────┘      └─────────────┘
-                            │                      │
-                            ├──────────┬───────────┤
-                            ▼          ▼           ▼
-                     ┌──────────┐ ┌────────┐ ┌─────────┐
-                     │PostgreSQL│ │MongoDB │ │ Azure   │
-                     │(Matches) │ │(Tracks)│ │ Storage │
-                     └──────────┘ └────────┘ └─────────┘
+### System Architecture
+
+```text
+┌─────────────┐        ┌─────────────┐
+│  Frontend   │        │   Backend   │
+│  (React)    │───────▶│  (Node.js)  │
+└─────────────┘        └──────┬──────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ AI Services (Modal GPU) │
+                 │                         │
+                 │ ┌─────────┐ ┌─────────┐ │
+                 │ │ Vision  │ │Tactical │ │
+                 │ │  GPU    │ │  GPU    │ │
+                 │ └─────────┘ └─────────┘ │
+                 │                         │
+                 │ ┌─────────┐ ┌─────────┐ │
+                 │ │   xG    │ │Offside │ │
+                 │ │  GPU    │ │  GPU    │ │
+                 │ └─────────┘ └─────────┘ │
+                 │                         │
+                 │ ┌─────────┐             │
+                 │ │  Foul   │             │
+                 │ │  GPU    │             │
+                 │ └─────────┘             │
+                 └──────────┬──────────────┘
+                            │
+              ┌─────────────┼─────────────┐
+              ▼             ▼             ▼
+        ┌──────────┐  ┌────────┐  ┌────────────┐
+        │PostgreSQL│  │MongoDB │  │Azure Blob  │
+        │ Matches  │  │ Tracks │  │  Storage   │
+        └──────────┘  └────────┘  └────────────┘
 ```
+
+
+### Full Live Pipeline (Recommended Flow)
+
+1. **Frontend** uploads a full match video to the **Backend**.
+2. **Backend** sends the video to the **Vision GPU** service (`POST /api/process-live-video`) and receives an NDJSON stream of frame‑by‑frame detections (players, ball, pitch coordinates, etc.).
+3. **Backend** reads the Vision NDJSON stream, groups it into small windows/frames, and distributes them to:
+   - **Tactical GPU** → tactical analysis (possession, pressure, ball progression, alerts)
+   - **xG GPU** → shot events and expected goals
+   - **Offside GPU** → offside decisions (per frame or window)
+4. **Backend** also cuts the original video into short clips/windows and sends them (with optional NDJSON context) to the **Foul GPU** for foul/no‑foul detection.
+5. All analysis results are saved to **PostgreSQL** (structured data) and **MongoDB** (tracking/tactical data).
+6. **Backend** pushes live updates to the **Frontend** via WebSocket or polling.
+
+---
+
+## 🤖 AI Services Deployment
+
+All AI models are deployed as **Modal** services, each with dedicated GPU instances and REST endpoints. The backend orchestrates calls to these services; the frontend never accesses them directly.
+
+### 1. Vision GPU Service
+
+**Base URL:**  
+`https://yaraamahmoudd12--koravision-vision-gpu-live-web.modal.run`
+
+**Docs / Swagger:**  
+`https://yaraamahmoudd12--koravision-vision-gpu-live-web.modal.run/docs`
+
+**Main Endpoint:**  
+`POST /api/process-live-video`
+
+**Use:** Takes the original football video and returns an NDJSON stream of frame‑by‑frame detections.
+
+**Output:** NDJSON stream containing detections, players, ball, pitch coordinates, `frame_id`, `timestamp`.
+
+---
+
+### 2. Tactical GPU Service
+
+**Base URL:**  
+`https://yaraamahmoudd12--koravision-tactical-gpu-live-web.modal.run`
+
+**Docs / Swagger:**  
+`https://yaraamahmoudd12--koravision-tactical-gpu-live-web.modal.run/docs`
+
+**Health:**  
+`https://yaraamahmoudd12--koravision-tactical-gpu-live-web.modal.run/health`
+
+**Main Endpoint:**  
+`POST /api/analyze-live-ndjson?job_id=match_id`
+
+**Use:** Takes Vision NDJSON and returns tactical analysis: teams, possession, pressure, ball progression, transitions, alerts, reliability, and the latest tactical frame output.
+
+**Streaming Endpoint:**  
+`POST /api/stream-live-ndjson?job_id=match_id` – returns tactical outputs as an NDJSON stream for live updates.
+
+**Video Overlay Endpoint (Demo/Export):**  
+`POST /api/analyze-video-with-json-output/` – takes original video + Vision NDJSON and returns a ZIP containing a tactical overlay video and the latest tactical JSON.
+
+**Important:** For full NDJSON files, use `curl -L` as processing may exceed 150 seconds. For live backends, send small NDJSON windows, not the full match at once.
+
+---
+
+### 3. xG GPU Service
+
+**Base URL:**  
+`https://yaraamahmoudd12--koravision-xg-gpu-live-web.modal.run`
+
+**Docs / Swagger:**  
+`https://yaraamahmoudd12--koravision-xg-gpu-live-web.modal.run/docs`
+
+**Health:**  
+`https://yaraamahmoudd12--koravision-xg-gpu-live-web.modal.run/health`
+
+**Main Endpoint:**  
+`POST /api/analyze-live-ndjson?job_id=match_id`
+
+**Use:** Takes Vision NDJSON and returns xG shot analysis: `shot_count`, `total_xg`, shot events, xG per shot, shot location, shooter/team, and explanation.
+
+---
+
+### 4. Foul GPU Service
+
+**Base URL:**  
+`https://yaraamahmoudd12--koravision-foul-gpu-live-web.modal.run`
+
+**Docs / Swagger:**  
+`https://yaraamahmoudd12--koravision-foul-gpu-live-web.modal.run/docs`
+
+**Health:**  
+`https://yaraamahmoudd12--koravision-foul-gpu-live-web.modal.run/health`
+
+**Main Live Clip Endpoint:**  
+`POST /api/analyze-live-clip` – takes a short video clip and detects foul/no‑foul.
+
+**Alternative Video Window Endpoint:**  
+`POST /api/analyze-live-video-window` – takes a video window plus optional NDJSON context.
+
+**Input:** Short video clip/window (plus matching NDJSON context optional).  
+**Output:** `foul_candidate` / `no_foul`, confidence, timestamp, events, debug info.
+
+**Important:** Backend should cut the original video into small clips around important moments or rolling windows. Do not send the full match video to the foul service.
+
+---
+
+### 5. Offside GPU Service
+
+**Base URL:**  
+`https://yaraamahmoudd12--web.modal.run`
+
+**Docs / Swagger:**  
+`https://yaraamahmoudd12--web.modal.run/docs`
+
+**Health:**  
+`https://yaraamahmoudd12--web.modal.run/health`
+
+**Modal Deployment Page:**  
+`https://modal.com/apps/yaraamahmoudd12/main/deployed/koravision-offside-gpu-live`
+
+**Main Endpoints:**
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/analyze-live-ndjson` | POST | Takes Vision NDJSON packets from Backend, detects offside |
+| `/api/analyze-window` | POST | JSON window with player positions, ball, team info |
+| `/api/analyze-frame` | POST | Single frame analysis |
+| `/api/analyze-live-video-window` | POST | Video window + JSON context (for visual output) |
+| `/api/visualize-window` | POST | Returns visualisation of offside decision |
+| `/outputs/{filename}` | GET | Retrieve generated output files (e.g., visualisation images) |
+
+**Input fields can include:**  
+`match_id`, `window_id`, `frame_id`, `timestamp_sec`, players positions, ball position, `team_id`, `attacking_team_id`, `defending_team_id`, `attacking_direction`, `pitch_xy_m`, Vision NDJSON context, optional video window.
+
+**Output:** `offside` / `no_offside`, confidence, `timestamp_sec`, `attacker_id`, `last_defender_id`, `ball_holder` / `pass_sender`, `offside_line`, event details, optional `visual_output_url`.
+
+**Important:** For live backends, send small Vision NDJSON windows, not the full match. For demo/report, you may send a video window + context to request a visual output.
+
+---
+
+### Recommended Full Backend Flow (Detailed)
+
+```txt
+1. Frontend uploads full video to Backend.
+2. Backend sends full video to Vision GPU:
+   POST Vision /api/process-live-video
+3. Vision returns NDJSON stream line by line.
+4. Backend reads Vision NDJSON live.
+5. Backend groups Vision packets into frames/windows.
+6. Backend sends Vision NDJSON windows to Tactical GPU:
+   POST Tactical /api/analyze-live-ndjson?job_id=match_id
+7. Backend sends Vision NDJSON windows to xG GPU:
+   POST xG /api/analyze-live-ndjson?job_id=match_id
+8. Backend sends Vision NDJSON windows or single frames to Offside GPU:
+   POST Offside /api/analyze-live-ndjson
+   or
+   POST Offside /api/analyze-window
+   or
+   POST Offside /api/analyze-frame
+9. Backend also cuts the original video into short clips/windows.
+10. Backend sends each clip/window to Foul GPU:
+    POST Foul /api/analyze-live-clip
+    or
+    POST Foul /api/analyze-live-video-window
+11. Backend may also send matching Vision NDJSON context with the clip.
+12. Foul returns: foul_candidate / no_foul, confidence, timestamp, events
+13. Offside returns: offside / no_offside, confidence, timestamp_sec, attacker_id, last_defender_id, offside_line, event details
+14. Backend saves all results in PostgreSQL.
+15. Backend sends live updates to Frontend.
 
 ### Data Flow
 
