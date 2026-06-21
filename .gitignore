@@ -21,3 +21,8 @@ tactical_engine_final_requirements/outputs/tactical_overlay.mp4 tactical_engine_
 .mp4
 data/
 outputs/
+*.ndjson
+.mp4
+data/
+outputs/
+.pt
