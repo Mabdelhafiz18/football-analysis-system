@@ -16,3 +16,13 @@ frames/*
 !frames/.gitkeep 
 
 tactical_engine_final_requirements/outputs/tactical_overlay.mp4 tactical_engine_final_requirements/outputs/tactical_overlay_fixed.mp4
+*.pt
+*.ndjson
+.mp4
+data/
+outputs/
+*.ndjson
+.mp4
+data/
+outputs/
+.pt
