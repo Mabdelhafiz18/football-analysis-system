@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS fouls (
+    id SERIAL PRIMARY KEY,
+    match_id INT REFERENCES matches (id) ON DELETE CASCADE,
+    foul_id INT,
+    minute INT,
+    second DECIMAL(5, 2),
+    timestamp DECIMAL(8, 2),
+    frame_number INT,
+    team team_side_enum,
+    player_number INT,
+    player_name VARCHAR(100),
+    position_x DECIMAL(8, 2),
+    position_y DECIMAL(8, 2),
+    foul_type VARCHAR(50),
+    severity foul_severity_enum,
+    card_type card_type_enum,
+    confidence DECIMAL(3, 2),
+    contact_point_x DECIMAL(8, 2),
+    contact_point_y DECIMAL(8, 2),
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE (match_id, foul_id)
+);
