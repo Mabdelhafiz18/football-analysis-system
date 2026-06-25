@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* KoraVision Design System - Obsidian Glassmorphism
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Obsidian Dark Theme */
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Electric Lime - Primary Accent */
+    --primary: 82 84% 67%;
+    --primary-foreground: 0 0% 2%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 82 84% 67%;
+    --accent-foreground: 0 0% 2%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 82 84% 67%;
+
+    --radius: 0.75rem;
+
+    /* Custom KoraVision tokens */
+    --glass: 0 0% 8%;
+    --glass-border: 0 0% 20%;
+    --lime-glow: 82 84% 67%;
+    --obsidian: 0 0% 2%;
+    --grid-color: 0 0% 12%;
+  }
+
+  /* Light Theme */
+  .light {
+    --background: 210 20% 98%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    /* Electric Lime - Primary Accent (same hue, adjusted for light) */
+    --primary: 82 84% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 10% 92%;
+    --secondary-foreground: 220 20% 20%;
+
+    --muted: 220 10% 95%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 82 84% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 88%;
+    --input: 220 10% 92%;
+    --ring: 82 84% 45%;
+
+    /* Custom KoraVision tokens - Light */
+    --glass: 220 20% 96%;
+    --glass-border: 220 10% 80%;
+    --lime-glow: 82 84% 45%;
+    --obsidian: 210 20% 98%;
+    --grid-color: 220 10% 88%;
+  }
+
+  /* Dark Theme */
+  .dark {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 82 84% 67%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 82 84% 67%;
+    --accent-foreground: 0 0% 2%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 82 84% 67%;
+
+    /* Custom KoraVision tokens - Dark */
+    --glass: 0 0% 8%;
+    --glass-border: 0 0% 20%;
+    --lime-glow: 82 84% 67%;
+    --obsidian: 0 0% 2%;
+    --grid-color: 0 0% 12%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Submerged Grid Background */
+  .grid-background {
+    background-image:
+      linear-gradient(hsl(var(--grid-color) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--grid-color) / 0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Glassmorphism base */
+  .glass {
+    background: hsl(var(--glass) / 0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid hsl(var(--glass-border) / 0.3);
+  }
+
+  .glass-card {
+    background: hsl(var(--glass) / 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--glass-border) / 0.2);
+  }
+
+  /* AI Data Typography */
+  .font-mono-ai {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Lime Glow Effect */
+  .lime-glow {
+    box-shadow: 0 0 30px hsl(var(--lime-glow) / 0.3),
+      0 0 60px hsl(var(--lime-glow) / 0.15);
+  }
+
+  .lime-glow-soft {
+    box-shadow: 0 0 20px hsl(var(--lime-glow) / 0.2);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--lime-glow) / 0.5);
+  }
+}
+
+@layer components {
+
+  /* Horizontal Scroll Container */
+  .horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-snap-item {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+
+  /* Moody Section Styling */
+  .moody-section {
+    filter: saturate(0.7);
+  }
+
+  .moody-section:hover {
+    filter: saturate(1);
+    transition: filter 0.5s ease;
+  }
+}
+
+@layer utilities {
+
+  /* Animation utilities */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-scan {
+    animation: scan 4s ease-in-out infinite;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+
+  .animate-blur-in {
+    animation: blur-in 0.8s ease-out forwards;
+  }
+
+  /* 3D Tilt on Hover */
+  .tilt-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+  }
+
+  .tilt-hover:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateZ(10px);
+    box-shadow: 10px 20px 40px hsl(0 0% 0% / 0.4);
+  }
+}
+
+/* Keyframes */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px hsl(var(--lime-glow) / 0.3),
+      0 0 40px hsl(var(--lime-glow) / 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 30px hsl(var(--lime-glow) / 0.5),
+      0 0 60px hsl(var(--lime-glow) / 0.25);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes blur-in {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes gradient-shift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-scan,
+  .animate-fade-up,
+  .animate-blur-in {
+    animation: none !important;
+  }
+
+  .tilt-hover:hover {
+    transform: none !important;
+  }
+}
+
+/* Theme Transition */
+html {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Light theme adjustments */
+.light .glass {
+  background: hsl(var(--glass) / 0.8);
+  box-shadow: 0 1px 3px hsl(0 0% 0% / 0.1);
+}
+
+.light .glass-card {
+  background: hsl(var(--glass) / 0.7);
+  box-shadow: 0 2px 8px hsl(0 0% 0% / 0.06);
+}
+
+.light .lime-glow {
+  box-shadow: 0 0 20px hsl(var(--lime-glow) / 0.15),
+    0 4px 12px hsl(0 0% 0% / 0.1);
+}
+
+.light .lime-glow-soft {
+  box-shadow: 0 0 12px hsl(var(--lime-glow) / 0.1),
+    0 2px 8px hsl(0 0% 0% / 0.08);
+}
+
+.light .text-glow {
+  text-shadow: none;
+}
+
+/* Mobile Bottom Sheet */
+@layer components {
+  .bottom-sheet {
+    @apply fixed inset-x-0 bottom-0 z-50;
+    @apply bg-card rounded-t-3xl shadow-2xl;
+    @apply transform transition-transform duration-300 ease-out;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .bottom-sheet-handle {
+    @apply w-12 h-1.5 bg-muted rounded-full mx-auto my-3;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+/* Video Player Responsive */
+@media (max-width: 640px) {
+  .video-controls {
+    padding: 0.5rem;
+  }
+
+  .video-controls button {
+    padding: 0.25rem;
+  }
+}
+/* Professional print report: hide application chrome and preserve real result cards. */
+@media print {
+  body { background: white !important; color: black !important; }
+  aside, header, nav, button { display: none !important; }
+  main { padding: 0 !important; }
+  .print-report { color: black !important; }
+  .print-report * { box-shadow: none !important; }
+  .print-report video { display: none !important; }
+  .print-report [class*="bg-card"], .print-report [class*="bg-background"] { background: white !important; }
+  .print-report [class*="text-muted"] { color: #444 !important; }
+}
